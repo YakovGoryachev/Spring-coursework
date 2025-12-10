@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${pageTitle} ? ${pageTitle + ' - MusicStream'} : 'MusicStream'">MusicStream</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" th:href="@{/static/css/all-tracks-style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="top-player">
+    <div class="player-controls">
+      <button class="player-btn" onclick="skipBackward()">
+        <i class="fas fa-step-backward"></i>
+      </button>
+      <button class="player-btn play-btn" onclick="togglePlay()">
+        <i class="fas fa-play" id="play-icon"></i>
+      </button>
+      <button class="player-btn" onclick="skipForward()">
+        <i class="fas fa-step-forward"></i>
+      </button>
+
+      <div class="track-info">
+        <div class="track-title">Now Playing: <span id="current-track">Dreams - Fleetwood Mac</span></div>
+        <div class="track-progress">
+          <div class="progress-bar" id="progress-bar">
+            <div class="progress" id="progress"></div>
+          </div>
+          <div class="time">
+            <span id="current-time">0:00</span> / <span id="total-time">4:18</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="volume-control">
+        <i class="fas fa-volume-up"></i>
+        <input type="range" id="volume" min="0" max="100" value="70" onchange="changeVolume(this.value)">
+      </div>
+    </div>
+
+    <div class="user-section">
+      <button class="login-btn" onclick="toggleLogin()">
+        <i class="fas fa-user"></i>
+        <span id="login-text">Войти</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Навигация -->
+  <nav class="main-nav">
+    <a th:href="@{/}" class="nav-link">
+      <i class="fas fa-home"></i>
+      <span>Главная</span>
+    </a>
+    <a th:href="@{/my}" class="nav-link">
+      <i class="fas fa-music"></i>
+      <span>Моя музыка</span>
+    </a>
+    <a th:href="@{/allTracks}" class="nav-link">
+      <i class="fas fa-music"></i>
+      <span>Треки</span>
+    </a>
+    <a th:href="@{/playlists}" class="nav-link">
+      <i class="fas fa-list"></i>
+      <span>Плейлисты</span>
+    </a>
+  </nav>
+
+  <!-- Блок для контента страниц -->
+<!--  <div th:replace="${content}"></div>-->
+  <div th:replace="~{__${content}__}"></div>
+
+  <!-- Футер -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-headphones"></i>
+        <span>MusicStream</span>
+      </div>
+      <div class="footer-links">
+        <a href="/about">О нас</a>
+        <a href="/contact">Контакты</a>
+        <a href="/privacy">Политика конфиденциальности</a>
+        <a href="/terms">Условия использования</a>
+      </div>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-vk"></i></a>
+        <a href="#"><i class="fab fa-telegram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+      </div>
+      <div class="footer-copyright">
+        © 2025 MusicStream. Все права защищены.
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script th:src="@{/js/player.js}"></script>
+<script th:src="@{/js/global-player.js}"></script>
+</body>
+</html>

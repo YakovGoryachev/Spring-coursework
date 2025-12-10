@@ -8,92 +8,49 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<!-- Главный контейнер -->
 <div class="container">
+    <div class="main-content" th:fragment="content">
 
-    <!-- Верхний плеер -->
-    <div class="top-player">
-        <div class="player-controls">
-            <button class="player-btn" onclick="skipBackward()">
-                <i class="fas fa-step-backward"></i>
-            </button>
-            <button class="player-btn play-btn" onclick="togglePlay()">
-                <i class="fas fa-play" id="play-icon"></i>
-            </button>
-            <button class="player-btn" onclick="skipForward()">
-                <i class="fas fa-step-forward"></i>
-            </button>
+        <!-- Поиск -->
+<!--        <div class="search-section">-->
+<!--&lt;!&ndash;            <div class="search-bar">&ndash;&gt;-->
+<!--&lt;!&ndash;                <i class="fas fa-search"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="text" placeholder="Искать треки, артистов, альбомы..." id="search-input">&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="search-btn" onclick="performSearch()">Найти</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            <div class="search-filters">-->
+<!--                <button class="filter-btn active">Все</button>-->
+<!--                <button class="filter-btn">Треки</button>-->
+<!--                <button class="filter-btn">Артисты</button>-->
+<!--                <button class="filter-btn">Альбомы</button>-->
+<!--            </div>-->
+<!--        </div>-->
 
-            <div class="track-info">
-                <div class="track-title">Now Playing: <span id="current-track">Dreams - Fleetwood Mac</span></div>
-                <div class="track-progress">
-                    <div class="progress-bar" id="progress-bar">
-                        <div class="progress" id="progress"></div>
-                    </div>
-                    <div class="time">
-                        <span id="current-time">0:00</span> / <span id="total-time">4:18</span>
-                    </div>
-                </div>
-            </div>
+        <div class="search-section">
+            <!-- Поисковая строка (если нужна) -->
+            <!-- <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Искать треки, артистов, альбомы..." id="search-input">
+                <button class="search-btn" onclick="performSearch()">Найти</button>
+            </div> -->
 
-            <div class="volume-control">
-                <i class="fas fa-volume-up"></i>
-                <input type="range" id="volume" min="0" max="100" value="70" onchange="changeVolume(this.value)">
-            </div>
-        </div>
-
-        <div class="user-section">
-            <button class="login-btn" onclick="toggleLogin()">
-                <i class="fas fa-user"></i>
-                <span id="login-text">Войти</span>
-            </button>
-            <div class="login-dropdown" id="login-dropdown">
-                <input type="text" placeholder="Email" class="login-input">
-                <input type="password" placeholder="Пароль" class="login-input">
-                <button class="login-submit">Войти</button>
-                <a href="#" class="register-link">Зарегистрироваться</a>
+            <!-- Кнопки-ссылки для навигации -->
+            <div class="search-filters">
+                <a href="/" class="filter-btn active" style="text-decoration: none">
+                    Все
+                </a>
+<!--                <a href="/allTracks" class="filter-btn" style="text-decoration: none">-->
+<!--                    <i class="fas fa-music"></i> Треки-->
+<!--                </a>-->
+                <a href="#" class="filter-btn" style="text-decoration: none">
+                    <i class="fas fa-user"></i> Артисты
+                </a>
+                <a href="#" class="filter-btn" style="text-decoration: none">
+                    <i class="fas fa-compact-disc"></i> Альбомы
+                </a>
             </div>
         </div>
-    </div>
 
-    <!-- Навигация -->
-    <nav class="main-nav">
-        <a href="#" class="nav-link active">
-            <i class="fas fa-home"></i>
-            <span>Главная</span>
-        </a>
-        <a href="#" class="nav-link">
-            <i class="fas fa-music"></i>
-            <span>Моя музыка</span>
-        </a>
-        <a href="#" class="nav-link">
-            <i class="fas fa-list"></i>
-            <span>Плейлисты</span>
-        </a>
-        <a href="#" class="nav-link">
-            <i class="fas fa-compass"></i>
-            <span>Поиск</span>
-        </a>
-    </nav>
-
-    <!-- Поиск -->
-    <div class="search-section">
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Искать треки, артистов, альбомы..." id="search-input">
-            <button class="search-btn" onclick="performSearch()">Найти</button>
-        </div>
-        <div class="search-filters">
-            <button class="filter-btn active">Все</button>
-            <button class="filter-btn">Треки</button>
-            <button class="filter-btn">Артисты</button>
-            <button class="filter-btn">Альбомы</button>
-            <button class="filter-btn">Плейлисты</button>
-        </div>
-    </div>
-
-    <!-- Основной контент -->
-    <div class="main-content">
         <!-- Популярные треки -->
         <section class="section">
             <h2 class="section-title">
@@ -162,29 +119,13 @@
                 <a href="#"><i class="fab fa-github"></i></a>
             </div>
             <div class="footer-copyright">
-                © 2024 MusicStream. Все права защищены.
+                © 2025 MusicStream. Все права защищены.
             </div>
         </div>
     </footer>
 </div>
 
-<!-- Модальное окно для входа -->
-<div class="modal-overlay" id="login-modal">
-    <div class="modal">
-        <h2>Вход в аккаунт</h2>
-        <form class="modal-form">
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Пароль" required>
-            <button type="submit" class="modal-submit">Войти</button>
-            <button type="button" class="modal-cancel" onclick="closeModal()">Отмена</button>
-        </form>
-        <p class="modal-footer">
-            Нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрироваться</a>
-        </p>
-    </div>
-</div>
 
-<!-- Скрипты -->
 <script th:src="@{/static/js/player.js}"></script>
 <script th:src="@{/static/js/search.js}"></script>
 <script th:src="@{/static/js/data.js}"></script>

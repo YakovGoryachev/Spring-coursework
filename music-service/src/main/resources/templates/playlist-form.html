@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать плейлист - MusicStream</title>
+    <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container" th:fragment="content">
+    <div class="section-header" style="margin-bottom: 30px;">
+        <h1 class="section-title">
+            <i class="fas fa-plus-circle"></i>
+            Создать новый плейлист
+        </h1>
+        <p style="color: #aaa; margin-top: 5px;">Заполните информацию о плейлисте</p>
+    </div>
+
+    <!-- Форма создания плейлиста -->
+    <div class="section">
+        <!-- Отображение ошибок валидации -->
+        <div th:if="${#fields.hasErrors('*')}"
+             style="background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+            <h4 style="color: #ff6b6b; margin-bottom: 10px;">
+                <i class="fas fa-exclamation-circle"></i> Ошибки заполнения формы:
+            </h4>
+            <ul style="color: #ff6b6b; margin: 0; padding-left: 20px;">
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Ошибка</li>
+            </ul>
+        </div>
+
+        <!-- Сообщение об успехе -->
+        <div th:if="${successMessage != null}"
+             style="background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.3); border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+            <p style="color: #4ecdc4; margin: 0;">
+                <i class="fas fa-check-circle"></i>
+                <span th:text="${successMessage}">Плейлист успешно создан!</span>
+            </p>
+        </div>
+
+        <form th:action="@{/playlists/create}" method="post" enctype="multipart/form-data">
+            <div style="display: grid; grid-template-columns: 300px 1fr; gap: 40px;">
+
+                <!-- Левая колонка - загрузка обложки -->
+                <div>
+                    <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
+                        <i class="fas fa-image"></i> Обложка плейлиста
+                    </h4>
+
+                    <div style="text-align: center;">
+                        <!-- Предпросмотр обложки -->
+                        <div id="cover-preview"
+                             style="width: 300px; height: 300px; border-radius: 10px; overflow: hidden; margin-bottom: 20px; background: linear-gradient(45deg, #1a508b, #0f3460); border: 2px solid rgba(255,255,255,0.1);">
+                            <img id="cover-image"
+                                 th:src="${playlistDto != null && playlistDto.coverUrl != null} ? ${playlistDto.coverUrl} : 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop'"
+                                 alt="Предпросмотр обложки"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <!-- Поле для URL обложки -->
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px; text-align: left;">
+                                URL обложки
+                            </label>
+                            <input type="url"
+                                   th:field="*{coverUrl}"
+                                   class="login-input"
+                                   placeholder="https://example.com/cover.jpg"
+                                   style="width: 100%;">
+                            <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                                Вставьте ссылку на изображение
+                            </small>
+                        </div>
+
+                        <!-- Или загрузка файла -->
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p style="color: #aaa; font-size: 14px; margin-bottom: 10px;">Или загрузите файл:</p>
+                            <input type="file"
+                                   name="coverFile"
+                                   accept="image/*"
+                                   style="width: 100%; color: white; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"
+                                   onchange="previewCover(event)">
+                        </div>
+
+                        <p style="color: #aaa; font-size: 12px; margin-top: 15px;">
+                            <i class="fas fa-info-circle"></i> Рекомендуемый размер: 1000x1000px
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Правая колонка - основная форма -->
+                <div>
+                    <!-- Название плейлиста -->
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                            <i class="fas fa-heading"></i> Название плейлиста *
+                        </label>
+                        <input type="text"
+                               th:field="*{title}"
+                               th:classappend="${#fields.hasErrors('title')} ? 'error' : ''"
+                               class="login-input"
+                               placeholder="Введите название плейлиста"
+                               style="width: 100%;"
+                               required>
+                        <div th:if="${#fields.hasErrors('title')}" style="color: #ff6b6b; font-size: 12px; margin-top: 5px;">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span th:errors="*{title}">Ошибка</span>
+                        </div>
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            От 3 до 100 символов
+                        </small>
+                    </div>
+
+                    <!-- Описание -->
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                            <i class="fas fa-align-left"></i> Описание
+                        </label>
+                        <textarea th:field="*{description}"
+                                  class="login-input"
+                                  placeholder="Опишите ваш плейлист..."
+                                  rows="6"
+                                  style="width: 100%; resize: vertical;"></textarea>
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            Максимум 500 символов
+                        </small>
+                    </div>
+
+                    <!-- Статус приватности -->
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                            <i class="fas fa-globe"></i> Видимость
+                        </label>
+                        <div style="display: flex; gap: 15px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio"
+                                       th:field="*{isPublic}"
+                                       th:value="true"
+                                       style="accent-color: #4ecdc4;">
+                                <span style="color: white;">
+                                    <i class="fas fa-globe"></i> Публичный
+                                </span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio"
+                                       th:field="*{isPublic}"
+                                       th:value="false"
+                                       style="accent-color: #4ecdc4;">
+                                <span style="color: white;">
+                                    <i class="fas fa-lock"></i> Приватный
+                                </span>
+                            </label>
+                        </div>
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            Публичные плейлисты видны всем пользователям
+                        </small>
+                    </div>
+
+                    <!-- Теги (опционально) -->
+                    <div style="margin-bottom: 30px;">
+                        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                            <i class="fas fa-tags"></i> Теги
+                        </label>
+                        <input type="text"
+                               th:field="*{tags}"
+                               class="login-input"
+                               placeholder="музыка, рок, 2024"
+                               style="width: 100%;">
+                        <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                            Введите теги через запятую
+                        </small>
+                    </div>
+
+                    <!-- Кнопки -->
+                    <div style="display: flex; justify-content: flex-end; gap: 15px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <a th:href="@{/playlists}" class="btn btn-outline" style="text-decoration: none;">
+                            <i class="fas fa-times"></i> Отмена
+                        </a>
+                        <button type="reset" class="btn btn-outline">
+                            <i class="fas fa-redo"></i> Очистить
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Создать плейлист
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Подсказки -->
+    <div class="section" style="margin-top: 30px; background: rgba(255,255,255,0.03);">
+        <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
+            <i class="fas fa-lightbulb"></i> Советы по созданию плейлиста
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+            <div style="color: #aaa; font-size: 14px;">
+                <p style="color: #4ecdc4; margin-bottom: 5px;"><i class="fas fa-check"></i> Выбирайте понятные названия</p>
+                <p>Название должно отражать тему плейлиста</p>
+            </div>
+            <div style="color: #aaa; font-size: 14px;">
+                <p style="color: #4ecdc4; margin-bottom: 5px;"><i class="fas fa-check"></i> Добавляйте описание</p>
+                <p>Опишите, что за музыка в плейлисте</p>
+            </div>
+            <div style="color: #aaa; font-size: 14px;">
+                <p style="color: #4ecdc4; margin-bottom: 5px;"><i class="fas fa-check"></i> Используйте теги</p>
+                <p>Теги помогают другим найти ваш плейлист</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewCover(event) {
+        const input = event.target;
+        const preview = document.getElementById('cover-image');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+</body>
+</html>

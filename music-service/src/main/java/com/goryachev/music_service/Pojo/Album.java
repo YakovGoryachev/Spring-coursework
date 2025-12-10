@@ -20,17 +20,23 @@ public class Album {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id") // ← это "код группы" в БД
+    @JoinColumn(name = "group_id")
     @JsonIgnoreProperties("albums")
     private Group group;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
+    @Column(name="play_count")
+    private Integer playCount;
 
-    // Связи
+
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("album")
     private List<Track> tracks;
+
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties
+    private List<AlbumRating> albumRatings;
 
     public Long getId() {
         return id;

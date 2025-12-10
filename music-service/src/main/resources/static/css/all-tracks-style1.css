@@ -1,0 +1,285 @@
+/* Панель поиска */
+    .filter-panel {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .search-form {
+        width: 100%;
+    }
+
+    .search-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .search-category {
+        flex-shrink: 0;
+    }
+
+    .category-select {
+        padding: 10px 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 180px;
+    }
+
+    .search-bar {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 5px 5px 5px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 14px;
+        padding: 10px;
+        outline: none;
+        width: 100%;
+    }
+
+    .search-input::placeholder {
+        color: #aaa;
+    }
+
+    .search-btn {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        padding: 10px 25px;
+        border-radius: 20px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+    .search-btn:hover {
+        background: linear-gradient(45deg, #5a67d8, #6b46c1);
+        transform: translateY(-2px);
+    }
+
+    .reset-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 20px;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .reset-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* Заголовки секций */
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .count-badge {
+        background: rgba(78, 205, 196, 0.2);
+        color: #4ecdc4;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: 10px;
+    }
+
+    /* Карточки информации */
+    .artist-cell, .album-cell {
+        padding: 10px 0 !important;
+    }
+
+    .artist-info-small, .album-info-small {
+        display: flex;
+        align-items: center;
+    }
+
+    .track-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .action-btn.favorite {
+        color: #ff6b6b;
+    }
+
+    /* Пагинация */
+    .pagination-section {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pagination-info {
+        text-align: center;
+        color: #aaa;
+        margin-bottom: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .pagination-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .pagination-btn:hover:not(.disabled) {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .pagination-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .page-numbers {
+        display: flex;
+        gap: 5px;
+        margin: 0 15px;
+    }
+
+    .page-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .page-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .page-btn.active {
+        background: #4ecdc4;
+        color: white;
+    }
+
+    .page-dots {
+        color: #aaa;
+        display: flex;
+        align-items: center;
+        padding: 0 5px;
+    }
+
+    .page-size-selector {
+        margin-left: 20px;
+        color: #aaa;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .page-size-selector .form-input.small {
+        padding: 5px 10px;
+        width: auto;
+    }
+
+    /* Тэг жанра */
+    .genre-tag {
+        background: rgba(102, 126, 234, 0.2);
+        color: #667eea;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .search-wrapper {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search-bar {
+            width: 100%;
+        }
+
+        .category-select {
+            width: 100%;
+            min-width: auto;
+        }
+
+        .search-btn, .reset-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .pagination {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .page-size-selector {
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }

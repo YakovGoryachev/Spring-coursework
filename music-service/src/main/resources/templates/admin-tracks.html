@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Управление треками - Админ-панель</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumbs" style="margin-bottom: 20px;">
+    <a th:href="@{/admin}" style="color: #aaa; text-decoration: none;">
+      <i class="fas fa-cogs"></i> Админ-панель
+    </a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <span style="color: white;">Управление треками</span>
+  </div>
+
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <div>
+      <h1 class="section-title">
+        <i class="fas fa-music"></i>
+        Управление треками
+      </h1>
+      <p style="color: #aaa; margin-top: 5px;">Всего треков: <span th:text="${totalTracks}">0</span></p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button type="button"
+              onclick="showSearchSection()"
+              id="search-btn"
+              class="btn btn-outline"
+              style="border: 1px solid rgba(255,255,255,0.2);">
+        <i class="fas fa-search"></i> Поиск
+      </button>
+      <button type="button"
+              onclick="showAddSection()"
+              id="add-btn"
+              class="btn btn-primary">
+        <i class="fas fa-plus"></i> Добавить трек
+      </button>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ ПОИСКА (по умолчанию видима) -->
+  <div id="search-section" class="section">
+    <form th:action="@{/admin/tracks}" method="get">
+      <div class="search-section">
+        <div class="search-bar">
+          <div class="search-wrapper" style="display: flex; align-items: center; gap: 10px; width: 100%;">
+            <!-- Селектор фильтра -->
+            <select name="filterBy" class="custom-select" style="width: 180px;">
+              <option value="title" th:selected="${filterBy == 'title'}">Название трека</option>
+              <option value="artist" th:selected="${filterBy == 'artist'}">Исполнитель</option>
+              <option value="album" th:selected="${filterBy == 'album'}">Альбом</option>
+              <option value="group" th:selected="${filterBy == 'group'}">Группа</option>
+              <option value="genre" th:selected="${filterBy == 'genre'}">Жанр</option>
+            </select>
+
+            <!-- Поле поиска -->
+            <i class="fas fa-search" style="color: #aaa;"></i>
+            <input type="text"
+                   name="searchQuery"
+                   th:value="${searchQuery}"
+                   placeholder="Введите для поиска..."
+                   class="search-input"
+                   style="flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none;">
+
+            <!-- Кнопка поиска -->
+            <button type="submit" class="search-btn">
+              <i class="fas fa-search"></i> Найти
+            </button>
+
+            <!-- Кнопка сброса -->
+            <a th:href="@{/admin/tracks}" class="reset-btn">
+              <i class="fas fa-redo"></i> Сбросить
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Список треков -->
+    <div style="margin-top: 25px;">
+      <h3 class="section-title" style="font-size: 16px; margin-bottom: 20px;">
+        <i class="fas fa-list"></i>
+        Результаты поиска (<span th:text="${tracks != null ? tracks.size() : 0}">0</span>)
+      </h3>
+
+      <div th:if="${tracks == null or tracks.empty}" class="empty-state" style="text-align: center; padding: 50px 20px; color: #aaa;">
+        <i class="fas fa-music" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p>Треки не найдены. Попробуйте изменить параметры поиска.</p>
+      </div>
+
+      <div th:if="${tracks != null and not tracks.empty}" class="tracks-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+        <!-- Карточка трека -->
+        <div th:each="track : ${tracks}" class="track-card" style="background: #0f3460; border-radius: 10px; padding: 15px; position: relative;">
+          <!-- Обложка трека -->
+          <div class="track-cover" style="width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; margin-bottom: 15px; background: linear-gradient(45deg, #1a508b, #0f3460);">
+            <img th:src="${track.coverUrl != null ? track.coverUrl : 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop'}"
+                 alt="Обложка" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+
+          <!-- Информация о треке -->
+          <div style="margin-bottom: 15px;">
+            <div class="track-title-card" style="font-size: 16px; font-weight: 600; margin-bottom: 5px; color: white;" th:text="${track.title}">
+              Название трека
+            </div>
+            <div class="track-artist" style="font-size: 14px; color: #aaa; margin-bottom: 3px;">
+              <i class="fas fa-user"></i> <span th:text="${track.artistName}">Исполнитель</span>
+            </div>
+            <div class="track-album" style="font-size: 14px; color: #aaa; margin-bottom: 3px;">
+              <i class="fas fa-compact-disc"></i> <span th:text="${track.albumName}">Альбом</span>
+            </div>
+            <div class="track-group" style="font-size: 14px; color: #aaa; margin-bottom: 3px;" th:if="${track.groupName}">
+              <i class="fas fa-users"></i> <span th:text="${track.groupName}">Группа</span>
+            </div>
+            <div class="track-genre" style="font-size: 12px; margin-top: 8px;">
+              <span style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; padding: 3px 10px; border-radius: 15px;" th:text="${track.genre}">
+                Жанр
+              </span>
+            </div>
+          </div>
+
+          <!-- Мета-информация -->
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #aaa; margin-bottom: 15px;">
+            <div>
+              <i class="fas fa-clock"></i> <span th:text="${track.duration}">0:00</span>
+            </div>
+            <div>
+              <i class="fas fa-play"></i> <span th:text="${track.plays}">0</span>
+            </div>
+          </div>
+
+          <!-- Кнопки действий -->
+          <div style="display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <a th:href="@{'/admin/tracks/edit/' + ${track.id}}"
+               class="btn btn-outline"
+               style="flex: 1; text-align: center; padding: 8px; text-decoration: none;">
+              <i class="fas fa-edit"></i> Изменить
+            </a>
+            <form th:action="@{'/admin/tracks/delete/' + ${track.id}}"
+                  method="post"
+                  th:style="'flex: 1;'"
+                  onsubmit="return confirm('Вы уверены, что хотите удалить этот трек?');">
+              <button type="submit" class="btn" style="background: rgba(255,107,107,0.2); color: #ff6b6b; width: 100%; padding: 8px; border: 1px solid rgba(255,107,107,0.3);">
+                <i class="fas fa-trash"></i> Удалить
+              </button>
+            </form>
+          </div>
+
+          <!-- Бейдж, если популярный -->
+          <div th:if="${track.plays > 1000}" style="position: absolute; top: 10px; right: 10px;">
+            <span style="background: rgba(255,193,7,0.2); color: #ffc107; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">
+              <i class="fas fa-fire"></i> Популярный
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Пагинация -->
+    <div th:if="${totalPages > 1}" class="pagination" style="margin-top: 30px;">
+      <!-- Кнопка "Назад" -->
+      <a th:if="${currentPage > 1}"
+         th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${currentPage - 1})}"
+         class="page-btn">
+        <i class="fas fa-chevron-left"></i>
+      </a>
+
+      <!-- Номера страниц -->
+      <div style="display: flex; gap: 5px;">
+        <th:block th:each="page : ${#numbers.sequence(1, totalPages)}">
+          <a th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${page})}"
+             th:class="${page == currentPage ? 'page-btn active' : 'page-btn'}">
+            <span th:text="${page}">1</span>
+          </a>
+        </th:block>
+      </div>
+
+      <!-- Кнопка "Вперед" -->
+      <a th:if="${currentPage < totalPages}"
+         th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${currentPage + 1})}"
+         class="page-btn">
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- СЕКЦИЯ ДОБАВЛЕНИЯ ТРЕКА (скрыта по умолчанию) -->
+  <div id="add-section" class="section" style="display: none;">
+    <h3 class="section-title" style="font-size: 18px; margin-bottom: 25px;">
+      <i class="fas fa-plus-circle"></i> Добавить новый трек
+    </h3>
+
+    <form th:action="@{/admin/tracks/add}" method="post" enctype="multipart/form-data">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+        <!-- Левая колонка -->
+        <div>
+          <!-- Основная информация -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
+              <i class="fas fa-info-circle"></i> Основная информация
+            </h4>
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Название трека *
+              </label>
+              <input type="text"
+                     name="title"
+                     required
+                     class="login-input"
+                     placeholder="Введите название трека"
+                     style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Исполнитель *
+              </label>
+              <input type="text"
+                     name="artist"
+                     required
+                     class="login-input"
+                     placeholder="Введите имя исполнителя"
+                     style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Альбом
+              </label>
+              <input type="text"
+                     name="album"
+                     class="login-input"
+                     placeholder="Введите название альбома"
+                     style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Группа
+              </label>
+              <input type="text"
+                     name="group"
+                     class="login-input"
+                     placeholder="Введите название группы"
+                     style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Жанр *
+              </label>
+              <input type="text"
+                     name="genre"
+                     required
+                     class="login-input"
+                     placeholder="Введите жанр (например, Рок, Поп, Хип-хоп)"
+                     style="width: 100%;">
+            </div>
+          </div>
+
+          <!-- Техническая информация -->
+          <div style="margin-bottom: 25px;">
+
+
+            <div style="margin-bottom: 15px;">
+              <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                Аудиофайл *
+              </label>
+              <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <input type="file"
+                       name="audioFile"
+                       accept="audio/*"
+                       required
+                       style="width: 100%; color: white; padding: 8px; background: transparent; border: none;">
+                <p style="color: #aaa; font-size: 12px; margin-top: 8px;">
+                  Поддерживаемые форматы: MP3, WAV, FLAC, AAC
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая колонка -->
+        <div>
+          <!-- Обложка трека -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
+              <i class="fas fa-image"></i> Обложка трека
+            </h4>
+
+            <div style="text-align: center; padding: 25px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 2px dashed rgba(255,255,255,0.1);">
+              <div id="cover-preview" style="width: 200px; height: 200px; margin: 0 auto 20px; border-radius: 8px; overflow: hidden; background: #0f3460;">
+                <img id="cover-image" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"
+                     alt="Предпросмотр обложки"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+
+              <div style="margin-bottom: 15px;">
+                <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+                  Загрузите обложку
+                </label>
+                <input type="file"
+                       name="coverFile"
+                       accept="image/*"
+                       style="width: 100%; color: white; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"
+                       onchange="previewCover(event)">
+              </div>
+              <p style="color: #aaa; font-size: 12px; margin-top: 10px;">
+                Рекомендуемый размер: 1000x1000px
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Кнопки формы -->
+      <div style="display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <button type="button" onclick="showSearchSection()" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Назад к поиску
+        </button>
+        <div style="display: flex; gap: 10px;">
+          <button type="reset" class="btn btn-outline">
+            <i class="fas fa-redo"></i> Очистить форму
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Сохранить трек
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function showSearchSection() {
+      document.getElementById('search-section').style.display = 'block';
+      document.getElementById('add-section').style.display = 'none';
+      document.getElementById('search-btn').classList.add('active');
+      document.getElementById('add-btn').classList.remove('active');
+  }
+
+  function showAddSection() {
+      document.getElementById('search-section').style.display = 'none';
+      document.getElementById('add-section').style.display = 'block';
+      document.getElementById('search-btn').classList.remove('active');
+      document.getElementById('add-btn').classList.add('active');
+  }
+
+  function previewCover(event) {
+      const input = event.target;
+      const preview = document.getElementById('cover-image');
+
+      if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+              preview.src = e.target.result;
+          }
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  // Инициализация при загрузке
+  document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('search-btn').classList.add('active');
+  });
+</script>
+
+<style>
+  .btn.active {
+      background: #4ecdc4 !important;
+      border-color: #4ecdc4 !important;
+      color: white !important;
+  }
+</style>
+</body>
+</html>
