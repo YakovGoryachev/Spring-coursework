@@ -1,0 +1,337 @@
+/* ============================================
+   ПРОСТЫЕ СТИЛИ ДЛЯ АВТОРИЗАЦИИ (login/register)
+   Сделано студентом :)
+   ============================================ */
+
+/* 1. ОСНОВНОЙ КОНТЕЙНЕР */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a2e;
+    padding: 20px;
+}
+
+/* 2. КАРТОЧКА ФОРМЫ */
+.auth-card {
+    background: #16213e;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* 3. ШАПКА */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 24px;
+    color: #4ecdc4;
+    margin-bottom: 20px;
+}
+
+.auth-header h1 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* 4. ФОРМА */
+.auth-form {
+    margin-bottom: 25px;
+}
+
+/* 5. ГРУППЫ ПОЛЕЙ */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    color: #aaa;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-label i {
+    margin-right: 8px;
+    color: #667eea;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #0f3460;
+    border: 1px solid #2d4059;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4ecdc4;
+}
+
+.form-input::placeholder {
+    color: #777;
+}
+
+/* 6. ОПЦИИ ФОРМЫ */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #aaa;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #4ecdc4;
+}
+
+.forgot-link {
+    color: #4ecdc4;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+/* 7. КНОПКИ */
+.btn-block {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+
+}
+
+.btn-primary {
+    background: #4ecdc4;
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #44a08d;
+}
+
+/* 8. СООБЩЕНИЯ ОБ ОШИБКАХ */
+.alert {
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-error {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+}
+
+.alert-success {
+    background: rgba(78, 205, 196, 0.1);
+    border: 1px solid rgba(78, 205, 196, 0.3);
+    color: #4ecdc4;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 5px;
+}
+
+.password-hint {
+    color: #777;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* 9. РАЗДЕЛИТЕЛЬ */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider span {
+    padding: 0 15px;
+}
+
+/* 10. СОЦИАЛЬНЫЕ КНОПКИ */
+.social-auth {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.social-btn.google {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.social-btn.google:hover {
+    background: #f5f5f5;
+}
+
+.social-btn.vk {
+    background: #4c75a3;
+    color: white;
+    border: 1px solid #4c75a3;
+}
+
+.social-btn.vk:hover {
+    background: #3b5a7a;
+}
+
+/* 11. ФУТЕР ФОРМЫ */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #aaa;
+    font-size: 15px;
+}
+
+.auth-link {
+    color: #4ecdc4;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* 12. ССЫЛКА НА ГЛАВНУЮ */
+.back-home {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-link {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-link:hover {
+    color: white;
+}
+
+/* 13. АДАПТИВНОСТЬ */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 20px;
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+    }
+
+    .social-auth {
+        flex-direction: column;
+    }
+
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+/* 14. ДОПОЛНИТЕЛЬНЫЕ СТИЛИ (как будто забыл оптимизировать) */
+.terms-link {
+    color: #667eea;
+}
+
+input[type="date"] {
+    /* Немного костылей для даты */
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+}
+
+/* Простое анимирование кнопок */
+@keyframes simplePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.btn-primary:active {
+    animation: simplePulse 0.2s;
+}
+
+/* Просто сделал, чтобы выглядело не слишком профессионально */
+/* Можно сказать, "минималистично" :) */
