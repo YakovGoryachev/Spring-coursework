@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактирование артиста - Админ-панель</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumbs" style="margin-bottom: 20px;">
+    <a th:href="@{/admin}" style="color: #aaa; text-decoration: none;">
+      <i class="fas fa-cogs"></i> Админ-панель
+    </a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <a th:href="@{/admin/artists}" style="color: #aaa; text-decoration: none;">Артисты</a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <span style="color: white;">Редактирование</span>
+  </div>
+
+  <h1 class="section-title">
+    <i class="fas fa-edit"></i>
+    Редактирование артиста
+  </h1>
+
+  <form th:action="@{'/admin/artists/edit/' + ${artist.id}}" method="post" enctype="multipart/form-data" style="margin-top: 30px;">
+    <div style="max-width: 500px;">
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Имя артиста *
+        </label>
+        <input type="text" name="name" th:value="${artist.name}" required class="login-input" style="width: 100%;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Биография
+        </label>
+        <textarea name="biography" class="login-input" style="width: 100%; min-height: 100px;" th:text="${artist.biography}"></textarea>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Новый аватар (оставьте пустым, чтобы не менять)
+        </label>
+        <input type="file" name="avatarFile" accept="image/*" class="login-input" style="width: 100%;">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a th:href="@{/admin/artists}" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Назад
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Сохранить изменения
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
+

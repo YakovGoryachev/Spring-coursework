@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Управление альбомами - Админ-панель</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumbs" style="margin-bottom: 20px;">
+    <a th:href="@{/admin}" style="color: #aaa; text-decoration: none;">
+      <i class="fas fa-cogs"></i> Админ-панель
+    </a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <span style="color: white;">Управление альбомами</span>
+  </div>
+
+  <div th:if="${success}" style="background: rgba(76, 175, 80, 0.2); border: 1px solid rgba(76, 175, 80, 0.5); color: #4caf50; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
+  </div>
+  <div th:if="${error}" style="background: rgba(244, 67, 54, 0.2); border: 1px solid rgba(244, 67, 54, 0.5); color: #f44336; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+  </div>
+
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <div>
+      <h1 class="section-title">
+        <i class="fas fa-compact-disc"></i>
+        Управление альбомами
+      </h1>
+      <p style="color: #aaa; margin-top: 5px;">Всего альбомов: <span th:text="${albums != null ? albums.size() : 0}">0</span></p>
+    </div>
+    <button type="button" onclick="showAddSection()" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Добавить альбом
+    </button>
+  </div>
+
+  <!-- Поиск -->
+  <div id="search-section" class="section">
+    <form th:action="@{/admin/albums}" method="get">
+      <div class="search-section">
+        <div class="search-bar">
+          <div class="search-wrapper" style="display: flex; align-items: center; gap: 10px; width: 100%;">
+            <i class="fas fa-search" style="color: #aaa;"></i>
+            <input type="text"
+                   name="searchQuery"
+                   th:value="${searchQuery}"
+                   placeholder="Поиск по названию альбома..."
+                   class="search-input"
+                   style="flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none;">
+            <button type="submit" class="search-btn">
+              <i class="fas fa-search"></i> Найти
+            </button>
+            <a th:href="@{/admin/albums}" class="reset-btn">
+              <i class="fas fa-redo"></i> Сбросить
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Список альбомов -->
+    <div style="margin-top: 25px;">
+      <div th:if="${albums == null or albums.empty}" class="empty-state" style="text-align: center; padding: 50px 20px; color: #aaa;">
+        <i class="fas fa-compact-disc" style="font-size: 48px; margin-bottom: 15px;"></i>
+        <p>Альбомы не найдены.</p>
+      </div>
+
+      <div th:if="${albums != null and not albums.empty}">
+        <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden;">
+          <thead>
+            <tr style="background: rgba(255,255,255,0.1);">
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">ID</th>
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">Название</th>
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">Группа</th>
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">Дата выпуска</th>
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">Прослушиваний</th>
+              <th style="padding: 15px; text-align: left; color: white; border-bottom: 1px solid rgba(255,255,255,0.1);">Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="album : ${albums}" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: 15px; color: #aaa;" th:text="${album.id}"></td>
+              <td style="padding: 15px; color: white;" th:text="${album.name}"></td>
+              <td style="padding: 15px; color: #aaa;" th:text="${album.groupName}"></td>
+              <td style="padding: 15px; color: #aaa;" th:text="${album.releaseDate}"></td>
+              <td style="padding: 15px; color: #aaa;" th:text="${album.playCount}"></td>
+              <td style="padding: 15px;">
+                <div style="display: flex; gap: 10px;">
+                  <a th:href="@{'/admin/albums/edit/' + ${album.id}}"
+                     class="btn btn-outline"
+                     style="padding: 5px 15px; text-decoration: none; font-size: 12px;">
+                    <i class="fas fa-edit"></i> Изменить
+                  </a>
+                  <form th:action="@{'/admin/albums/delete/' + ${album.id}}"
+                        method="post"
+                        style="display: inline;"
+                        onsubmit="return confirm('Вы уверены, что хотите удалить этот альбом?');">
+                    <button type="submit" class="btn" style="background: rgba(255,107,107,0.2); color: #ff6b6b; padding: 5px 15px; border: 1px solid rgba(255,107,107,0.3);">
+                      <i class="fas fa-trash"></i> Удалить
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Форма добавления -->
+  <div id="add-section" class="section" style="display: none;">
+    <h3 class="section-title" style="font-size: 18px; margin-bottom: 25px;">
+      <i class="fas fa-plus-circle"></i> Добавить новый альбом
+    </h3>
+
+    <form th:action="@{/admin/albums/add}" method="post">
+      <div style="max-width: 500px;">
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Название альбома *
+          </label>
+          <input type="text" name="name" required class="login-input" style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Группа *
+          </label>
+          <select name="groupId" required class="login-input" style="width: 100%;">
+            <option value="">Выберите группу</option>
+            <option th:each="group : ${groups}" th:value="${group.id}" th:text="${group.name}"></option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Дата выпуска
+          </label>
+          <input type="date" name="releaseDate" class="login-input" style="width: 100%;">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+          <button type="button" onclick="showSearchSection()" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> Назад
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Сохранить
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function showSearchSection() {
+    document.getElementById('search-section').style.display = 'block';
+    document.getElementById('add-section').style.display = 'none';
+  }
+
+  function showAddSection() {
+    document.getElementById('search-section').style.display = 'none';
+    document.getElementById('add-section').style.display = 'block';
+  }
+</script>
+</body>
+</html>
+

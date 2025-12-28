@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<div th:fragment="content">
+  <!-- Заголовок и кнопка создания -->
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fas fa-list"></i>
+      Плейлисты
+    </h1>
+    <a href="/playlists/create" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Создать плейлист
+    </a>
+  </div>
+
+  <!-- Панель поиска и фильтров -->
+  <div class="search-panel">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text"
+             id="playlist-search"
+             placeholder="Поиск плейлистов по названию..."
+             onkeyup="searchPlaylists()">
+      <button class="search-btn" onclick="searchPlaylists()">
+        <i class="fas fa-search"></i> Найти
+      </button>
+    </div>
+
+    <div class="filter-options">
+      <div class="filter-group">
+        <label for="sort-playlists" class="filter-label">
+          <i class="fas fa-sort"></i> Сортировка:
+        </label>
+        <select id="sort-playlists" class="form-input filter-select" onchange="sortPlaylists()">
+          <option value="date_desc">Сначала новые</option>
+          <option value="date_asc">Сначала старые</option>
+          <option value="name_asc">По названию (А-Я)</option>
+          <option value="name_desc">По названию (Я-А)</option>
+          <option value="tracks_desc">По количеству треков</option>
+          <option value="popular">По популярности</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-by" class="filter-label">
+          <i class="fas fa-filter"></i> Показать:
+        </label>
+        <select id="filter-by" class="form-input filter-select" onchange="filterPlaylists()">
+          <option value="all">Все плейлисты</option>
+          <option value="my">Мои плейлисты</option>
+          <option value="favorites">Избранные</option>
+          <option value="public">Публичные</option>
+          <option value="private">Приватные</option>
+          <option value="recent">Недавно добавленные</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Список плейлистов -->
+  <div class="playlists-container">
+    <!-- Карточки плейлистов -->
+    <div class="playlists-grid" id="playlists-grid">
+      <!-- Плейлист 1 -->
+      <div class="playlist-card">
+        <div class="playlist-header">
+          <div class="playlist-cover">
+            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"
+                 alt="Rock Classics">
+            <div class="playlist-overlay">
+              <button class="play-btn" onclick="playPlaylist(1)" title="Воспроизвести">
+                <i class="fas fa-play"></i>
+              </button>
+            </div>
+            <div class="playlist-badge">
+              <i class="fas fa-crown"></i> Популярный
+            </div>
+          </div>
+          <div class="playlist-actions">
+            <button class="action-btn" title="Добавить в избранное">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="action-btn" title="Поделиться">
+              <i class="fas fa-share-alt"></i>
+            </button>
+            <div class="dropdown">
+              <button class="action-btn" title="Дополнительно">
+                <i class="fas fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a href="#" class="dropdown-item"><i class="fas fa-edit"></i> Редактировать</a>
+                <a href="#" class="dropdown-item"><i class="fas fa-copy"></i> Дублировать</a>
+                <a href="#" class="dropdown-item"><i class="fas fa-download"></i> Экспорт</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item text-danger"><i class="fas fa-trash"></i> Удалить</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="playlist-info">
+          <h3 class="playlist-title">Rock Classics</h3>
+          <p class="playlist-description">Лучшие рок-хиты всех времен. Queen, Led Zeppelin, The Beatles...</p>
+
+          <div class="playlist-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-music"></i> 45 треков
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-clock"></i> 3ч 45м
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-user"></i> Иван Иванов
+                        </span>
+          </div>
+
+          <div class="playlist-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-eye"></i> 2.4K
+                        </span>
+            <span class="stat-item">
+                            <i class="fas fa-heart"></i> 156
+                        </span>
+            <span class="stat-item">
+                            <i class="fas fa-headphones"></i> 12.5K
+                        </span>
+          </div>
+
+          <div class="playlist-tags">
+            <span class="tag">Рок</span>
+            <span class="tag">Классика</span>
+            <span class="tag">80s</span>
+          </div>
+
+          <div class="playlist-footer">
+            <span class="playlist-date">Создан 15.01.2024</span>
+            <span class="playlist-visibility public">
+                            <i class="fas fa-globe"></i> Публичный
+                        </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Плейлист 2 -->
+      <div class="playlist-card">
+        <div class="playlist-header">
+          <div class="playlist-cover">
+            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=400&fit=crop"
+                 alt="Chill Vibes">
+            <div class="playlist-overlay">
+              <button class="play-btn" onclick="playPlaylist(2)" title="Воспроизвести">
+                <i class="fas fa-play"></i>
+              </button>
+            </div>
+          </div>
+          <div class="playlist-actions">
+            <button class="action-btn" title="Добавить в избранное">
+              <i class="fas fa-heart"></i>
+            </button>
+            <button class="action-btn" title="Поделиться">
+              <i class="fas fa-share-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="playlist-info">
+          <h3 class="playlist-title">Chill Vibes</h3>
+          <p class="playlist-description">Расслабляющая музыка для работы и отдыха</p>
+
+          <div class="playlist-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-music"></i> 28 треков
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-clock"></i> 1ч 52м
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-user"></i> Вы
+                        </span>
+          </div>
+
+          <div class="playlist-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-eye"></i> 856
+                        </span>
+            <span class="stat-item">
+                            <i class="fas fa-heart"></i> 89
+                        </span>
+          </div>
+
+          <div class="playlist-tags">
+            <span class="tag">Чилл</span>
+            <span class="tag">Лоуфай</span>
+            <span class="tag">Джаз</span>
+          </div>
+
+          <div class="playlist-footer">
+            <span class="playlist-date">Обновлен вчера</span>
+            <span class="playlist-visibility private">
+                            <i class="fas fa-lock"></i> Приватный
+                        </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Плейлист 3 -->
+      <div class="playlist-card">
+        <div class="playlist-header">
+          <div class="playlist-cover">
+            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=400&fit=crop"
+                 alt="Workout Mix">
+            <div class="playlist-overlay">
+              <button class="play-btn" onclick="playPlaylist(3)" title="Воспроизвести">
+                <i class="fas fa-play"></i>
+              </button>
+            </div>
+          </div>
+          <div class="playlist-actions">
+            <button class="action-btn" title="Добавить в избранное">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="action-btn" title="Поделиться">
+              <i class="fas fa-share-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="playlist-info">
+          <h3 class="playlist-title">Workout Mix</h3>
+          <p class="playlist-description">Энергичная музыка для тренировок</p>
+
+          <div class="playlist-meta">
+                        <span class="meta-item">
+                            <i class="fas fa-music"></i> 35 треков
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-clock"></i> 2ч 15м
+                        </span>
+            <span class="meta-item">
+                            <i class="fas fa-user"></i> Анна Петрова
+                        </span>
+          </div>
+
+          <div class="playlist-stats">
+                        <span class="stat-item">
+                            <i class="fas fa-eye"></i> 1.2K
+                        </span>
+            <span class="stat-item">
+                            <i class="fas fa-heart"></i> 203
+                        </span>
+          </div>
+
+          <div class="playlist-tags">
+            <span class="tag">Тренировка</span>
+            <span class="tag">Энергия</span>
+            <span class="tag">Хип-хоп</span>
+          </div>
+
+          <div class="playlist-footer">
+            <span class="playlist-date">Создан 10.01.2024</span>
+            <span class="playlist-visibility public">
+                            <i class="fas fa-globe"></i> Публичный
+                        </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Кнопка добавления нового плейлиста -->
+      <div class="playlist-card add-playlist-card">
+        <div class="add-playlist-content" onclick="openCreateModal()">
+          <div class="add-icon">
+            <i class="fas fa-plus"></i>
+          </div>
+          <h3>Создать новый плейлист</h3>
+          <p>Добавьте свою коллекцию треков</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Пагинация -->
+  <div class="pagination-section">
+    <div class="pagination-info">
+      Показано <span id="playlists-count">3</span> из <span id="total-playlists">156</span> плейлистов
+    </div>
+
+    <div class="pagination">
+      <button class="pagination-btn" disabled>
+        <i class="fas fa-chevron-left"></i> Назад
+      </button>
+
+      <div class="page-numbers">
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span class="page-dots">...</span>
+        <button class="page-btn">12</button>
+      </div>
+
+      <button class="pagination-btn">
+        Вперед <i class="fas fa-chevron-right"></i>
+      </button>
+
+      <div class="page-size-selector">
+        <span>На странице:</span>
+        <select class="form-input small">
+          <option value="6">6</option>
+          <option value="12" selected>12</option>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно создания плейлиста -->
+  <div class="modal-overlay" id="create-playlist-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Создать новый плейлист</h2>
+        <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+      </div>
+      <form class="modal-form" id="create-playlist-form">
+        <div class="form-group">
+          <label for="playlist-name">Название плейлиста</label>
+          <input type="text" id="playlist-name" class="form-control"
+                 placeholder="Мой плейлист" required>
+        </div>
+
+        <div class="form-group">
+          <label for="playlist-description">Описание (необязательно)</label>
+          <textarea id="playlist-description" class="form-control"
+                    rows="3" placeholder="Расскажите о вашем плейлисте..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="playlist-visibility">Видимость</label>
+          <select id="playlist-visibility" class="form-control">
+            <option value="public">Публичный (виден всем)</option>
+            <option value="private" selected>Приватный (только для меня)</option>
+            <option value="unlisted">Скрытый (только по ссылке)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Обложка плейлиста</label>
+          <div class="cover-upload">
+            <div class="cover-preview">
+              <img id="cover-preview" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop"
+                   alt="Предпросмотр обложки">
+            </div>
+            <div class="upload-options">
+              <button type="button" class="btn btn-outline" onclick="document.getElementById('cover-upload').click()">
+                <i class="fas fa-upload"></i> Загрузить
+              </button>
+              <input type="file" id="cover-upload" accept="image/*" style="display: none;" onchange="previewCover(this)">
+              <button type="button" class="btn btn-outline" onclick="selectRandomCover()">
+                <i class="fas fa-random"></i> Случайная
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="modal-submit">Создать плейлист</button>
+          <button type="button" class="modal-cancel" onclick="closeCreateModal()">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Стили для страницы плейлистов -->
+  <style>
+    /* Заголовок страницы */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    /* Панель поиска */
+    .search-panel {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 20px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    /* Контейнер плейлистов */
+    .playlists-container {
+        margin-top: 20px;
+    }
+
+    /* Сетка плейлистов */
+    .playlists-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+    }
+
+    /* Карточка плейлиста */
+    .playlist-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .playlist-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Шапка карточки */
+    .playlist-header {
+        position: relative;
+    }
+
+    .playlist-cover {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+    }
+
+    .playlist-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .playlist-card:hover .playlist-cover img {
+        transform: scale(1.05);
+    }
+
+    .playlist-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .playlist-card:hover .playlist-overlay {
+        opacity: 1;
+    }
+
+    .play-btn {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .play-btn:hover {
+        transform: scale(1.1);
+        background: linear-gradient(45deg, #ff5252, #26a69a);
+    }
+
+    .playlist-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .playlist-actions {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        gap: 5px;
+    }
+
+    .action-btn {
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+        transform: scale(1.1);
+    }
+
+    /* Информация о плейлисте */
+    .playlist-info {
+        padding: 20px;
+    }
+
+    .playlist-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+        color: white;
+    }
+
+    .playlist-description {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    /* Мета-информация */
+    .playlist-meta {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #aaa;
+        font-size: 13px;
+    }
+
+    .meta-item i {
+        color: #4ecdc4;
+    }
+
+    /* Статистика */
+    .playlist-stats {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    /* Теги */
+    .playlist-tags {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .tag {
+        background: rgba(255, 255, 255, 0.1);
+        color: #aaa;
+        padding: 3px 10px;
+        border-radius: 15px;
+        font-size: 11px;
+    }
+
+    /* Футер карточки */
+    .playlist-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .playlist-date {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .playlist-visibility {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 15px;
+    }
+
+    .playlist-visibility.public {
+        background: rgba(78, 205, 196, 0.2);
+        color: #4ecdc4;
+    }
+
+    .playlist-visibility.private {
+        background: rgba(255, 107, 107, 0.2);
+        color: #ff6b6b;
+    }
+
+    /* Карточка добавления */
+    .add-playlist-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 300px;
+        cursor: pointer;
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .add-playlist-card:hover {
+        border-color: #4ecdc4;
+        background: rgba(78, 205, 196, 0.05);
+    }
+
+    .add-playlist-content {
+        text-align: center;
+        padding: 30px;
+    }
+
+    .add-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 32px;
+        color: #4ecdc4;
+        transition: all 0.3s ease;
+    }
+
+    .add-playlist-card:hover .add-icon {
+        background: rgba(78, 205, 196, 0.2);
+        transform: scale(1.1);
+    }
+
+    .add-playlist-content h3 {
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .add-playlist-content p {
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    /* Выпадающее меню */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: rgba(30, 30, 46, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 5px 0;
+        min-width: 180px;
+        display: none;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .dropdown-item {
+        display: block;
+        padding: 8px 15px;
+        color: #aaa;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .dropdown-item i {
+        width: 20px;
+        margin-right: 8px;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 5px 0;
+    }
+
+    .dropdown-item.text-danger {
+        color: #ff6b6b;
+    }
+
+    .dropdown-item.text-danger:hover {
+        background: rgba(255, 107, 107, 0.1);
+    }
+
+    /* Загрузка обложки */
+    .cover-upload {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .cover-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cover-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .upload-options {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .playlists-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-options {
+            flex-direction: column;
+        }
+
+        .cover-upload {
+            flex-direction: column;
+        }
+
+        .cover-preview {
+            align-self: center;
+        }
+    }
+  </style>
+
+  <!-- JavaScript для страницы -->
+  <script>
+    // Поиск плейлистов
+    function searchPlaylists() {
+        const query = document.getElementById('playlist-search').value;
+        console.log('Поиск плейлистов:', query);
+        // Здесь будет AJAX запрос
+    }
+
+    // Сортировка плейлистов
+    function sortPlaylists() {
+        const sortBy = document.getElementById('sort-playlists').value;
+        console.log('Сортировка по:', sortBy);
+        // Здесь будет AJAX запрос
+    }
+
+    // Фильтрация плейлистов
+    function filterPlaylists() {
+        const filterBy = document.getElementById('filter-by').value;
+        console.log('Фильтр:', filterBy);
+        // Здесь будет AJAX запрос
+    }
+
+    // Воспроизведение плейлиста
+    function playPlaylist(playlistId) {
+        console.log('Воспроизведение плейлиста:', playlistId);
+        // Здесь будет логика воспроизведения
+    }
+
+    // Модальное окно создания
+    function openCreateModal() {
+        document.getElementById('create-playlist-modal').classList.add('show');
+    }
+
+    function closeCreateModal() {
+        document.getElementById('create-playlist-modal').classList.remove('show');
+    }
+
+    // Предпросмотр обложки
+    function previewCover(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('cover-preview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Случайная обложка
+    function selectRandomCover() {
+        const covers = [
+            'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=300&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=300&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&h=300&fit=crop'
+        ];
+
+        const randomCover = covers[Math.floor(Math.random() * covers.length)];
+        document.getElementById('cover-preview').src = randomCover;
+    }
+
+    // Обработка формы создания
+    document.getElementById('create-playlist-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('playlist-name').value;
+        const description = document.getElementById('playlist-description').value;
+        const visibility = document.getElementById('playlist-visibility').value;
+
+        console.log('Создание плейлиста:', { name, description, visibility });
+
+        // Здесь будет AJAX запрос на создание плейлиста
+
+        closeCreateModal();
+        alert('Плейлист создан!');
+    });
+
+    // Закрытие модального окна при клике вне его
+    document.addEventListener('click', function(e) {
+        const modal = document.getElementById('create-playlist-modal');
+        if (e.target === modal) {
+            closeCreateModal();
+        }
+    });
+  </script>
+</div>
+</html>

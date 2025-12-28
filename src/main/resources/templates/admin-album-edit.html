@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактирование альбома - Админ-панель</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumbs" style="margin-bottom: 20px;">
+    <a th:href="@{/admin}" style="color: #aaa; text-decoration: none;">
+      <i class="fas fa-cogs"></i> Админ-панель
+    </a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <a th:href="@{/admin/albums}" style="color: #aaa; text-decoration: none;">Альбомы</a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <span style="color: white;">Редактирование</span>
+  </div>
+
+  <h1 class="section-title">
+    <i class="fas fa-edit"></i>
+    Редактирование альбома
+  </h1>
+
+  <form th:action="@{'/admin/albums/edit/' + ${album.id}}" method="post" style="margin-top: 30px;">
+    <div style="max-width: 500px;">
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Название альбома *
+        </label>
+        <input type="text" name="name" th:value="${album.name}" required class="login-input" style="width: 100%;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Группа *
+        </label>
+        <select name="groupId" required class="login-input" style="width: 100%;">
+          <option th:each="group : ${groups}" th:value="${group.id}" th:selected="${group.id == album.groupId}" th:text="${group.name}"></option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+          Дата выпуска
+        </label>
+        <input type="date" name="releaseDate" th:value="${album.releaseDate}" class="login-input" style="width: 100%;">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+        <a th:href="@{/admin/albums}" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Назад
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> Сохранить изменения
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
+

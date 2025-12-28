@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация - MusicStream</title>
+  <link rel="stylesheet" th:href="@{/static/css/login.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Логотип -->
+    <div class="auth-header">
+      <div class="auth-logo">
+        <i class="fas fa-headphones"></i>
+        <span>MusicStream</span>
+      </div>
+      <h1>Создать аккаунт</h1>
+      <p class="auth-subtitle">Присоединяйтесь к MusicStream</p>
+    </div>
+
+    <!-- Форма регистрации -->
+    <form th:action="@{/register}" method="post" th:object="${user}" class="auth-form">
+      <!-- Сообщения об ошибках -->
+      <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span th:each="err : ${#fields.errors('*')}" th:text="${err}"></span>
+      </div>
+      <div th:if="${success}" class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        Регистрация успешна! Теперь вы можете войти.
+      </div>
+
+      <!-- Имя пользователя -->
+      <div class="form-group">
+        <label for="login" class="form-label">
+          <i class="fas fa-user"></i> Имя пользователя
+        </label>
+        <input type="text"
+               id="login"
+               th:field="*{login}"
+               class="form-input"
+               placeholder="Придумайте логин"
+               required>
+        <div th:if="${#fields.hasErrors('login')}" class="error-message">
+          <span th:errors="*{login}"></span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">
+          <i class="fas fa-envelope"></i> Email
+        </label>
+        <input type="email"
+               id="email"
+               th:field="*{email}"
+               class="form-input"
+               placeholder="ваш@email.com"
+               required>
+        <div th:if="${#fields.hasErrors('email')}" class="error-message">
+          <span th:errors="*{email}"></span>
+        </div>
+      </div>
+
+      <!-- Пароль -->
+      <div class="form-group">
+        <label for="password" class="form-label">
+          <i class="fas fa-lock"></i> Пароль
+        </label>
+        <input type="password"
+               id="password"
+               th:field="*{password}"
+               class="form-input"
+               placeholder="Минимум 8 символов"
+               required>
+        <div class="password-hint">
+          <i class="fas fa-info-circle"></i> Минимум 8 символов, буквы и цифры
+        </div>
+
+<!--        дата регистрации-->
+        <div th:if="${#fields.hasErrors('dateRegister')}" class="error-message">
+          <span th:errors="*{dateRegister}"></span>
+        </div>
+        <div class="form-group">
+          <label for="dateBorn" class="form-label">
+            <i class="fas fa-address-card"></i> Дата рожения
+          </label>
+          <input type="date"
+                 id="dateBorn"
+                 th:field="*{dateBorn}"
+                 class="form-input"
+                 placeholder="дата рождения"
+                 required>
+          <div th:if="${#fields.hasErrors('dateBorn')}" class="error-message">
+            <span th:errors="*{dateBorn}"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Подтверждение пароля -->
+      <!--      <div class="form-group">-->
+      <!--        <label for="confirmPassword" class="form-label">-->
+      <!--          <i class="fas fa-lock"></i> Подтверждение пароля-->
+      <!--        </label>-->
+      <!--        <input type="password"-->
+      <!--               id="confirmPassword"-->
+      <!--               th:field="*{confirmPassword}"-->
+      <!--               class="form-input"-->
+      <!--               placeholder="Повторите пароль"-->
+      <!--               required>-->
+      <!--        <div th:if="${#fields.hasErrors('confirmPassword')}" class="error-message">-->
+      <!--          <span th:errors="*{confirmPassword}"></span>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <!-- Дата рождения (опционально) -->
+      <!--      <div class="form-group">-->
+      <!--        <label for="birthDate" class="form-label">-->
+      <!--          <i class="fas fa-birthday-cake"></i> Дата рождения-->
+      <!--        </label>-->
+      <!--        <input type="date"-->
+      <!--               id="birthDate"-->
+      <!--               th:field="*{birthDate}"-->
+      <!--               class="form-input">-->
+      <!--      </div>-->
+
+      <!-- Соглашение -->
+      <!--      <div class="form-options">-->
+      <!--        <label class="checkbox-label">-->
+      <!--          <input type="checkbox" th:field="*{agreement}" required>-->
+      <!--          <span>Я согласен с <a th:href="@{/terms}" class="terms-link">условиями использования</a> и-->
+      <!--                    <a th:href="@{/privacy}" class="terms-link">политикой конфиденциальности</a></span>-->
+      <!--        </label>-->
+      <!--        <div th:if="${#fields.hasErrors('agreement')}" class="error-message">-->
+      <!--          <span th:errors="*{agreement}"></span>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+      <!-- Кнопка регистрации -->
+      <button type="submit" class="btn btn-primary btn-block">
+        <i class="fas fa-user-plus"></i> Зарегистрироваться
+      </button>
+    </form>
+
+    <!-- Разделитель -->
+    <div class="auth-divider">
+      <span>Или зарегистрируйтесь с помощью</span>
+    </div>
+
+    <!-- Социальные сети -->
+    <div class="social-auth">
+      <button type="button" class="social-btn google">
+        <i class="fab fa-google"></i> Google
+      </button>
+      <button type="button" class="social-btn vk">
+        <i class="fab fa-vk"></i> ВКонтакте
+      </button>
+    </div>
+
+    <!-- Ссылка на вход -->
+    <div class="auth-footer">
+      <p>Уже есть аккаунт? <a th:href="@{/login}" class="auth-link">Войти</a></p>
+    </div>
+
+    <!-- Ссылка на главную -->
+    <div class="back-home">
+      <a th:href="@{/}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Вернуться на главную
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

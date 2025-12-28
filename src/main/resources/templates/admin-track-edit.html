@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Редактирование трека - Админ-панель</title>
+  <link rel="stylesheet" th:href="@{/static/css/style-uni.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumbs" style="margin-bottom: 20px;">
+    <a th:href="@{/admin}" style="color: #aaa; text-decoration: none;">
+      <i class="fas fa-cogs"></i> Админ-панель
+    </a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <a th:href="@{/admin/tracks}" style="color: #aaa; text-decoration: none;">Треки</a>
+    <span style="color: #aaa; margin: 0 8px;">/</span>
+    <span style="color: white;">Редактирование</span>
+  </div>
+
+  <h1 class="section-title">
+    <i class="fas fa-edit"></i>
+    Редактирование трека
+  </h1>
+
+  <form th:action="@{'/admin/tracks/edit/' + ${track.id}}" method="post" enctype="multipart/form-data" style="margin-top: 30px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+      <div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Название трека *
+          </label>
+          <input type="text"
+                 name="title"
+                 th:value="${track.name}"
+                 required
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Исполнитель
+          </label>
+          <input type="text"
+                 name="artist"
+                 th:value="${track.artistName}"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Альбом
+          </label>
+          <input type="text"
+                 name="album"
+                 th:value="${track.albumName}"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Группа
+          </label>
+          <input type="text"
+                 name="group"
+                 th:value="${track.groupName}"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Жанр
+          </label>
+          <input type="text"
+                 name="genre"
+                 th:value="${track.genre}"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Длительность (секунды)
+          </label>
+          <input type="number"
+                 name="duration"
+                 th:value="${track.duration}"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Новый аудиофайл (оставьте пустым, чтобы не менять)
+          </label>
+          <input type="file"
+                 name="audioFile"
+                 accept="audio/*"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+      </div>
+
+      <div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; color: #aaa; margin-bottom: 8px; font-size: 14px;">
+            Новая обложка (оставьте пустым, чтобы не менять)
+          </label>
+          <input type="file"
+                 name="coverFile"
+                 accept="image/*"
+                 class="login-input"
+                 style="width: 100%;">
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <a th:href="@{/admin/tracks}" class="btn btn-outline">
+        <i class="fas fa-arrow-left"></i> Назад
+      </a>
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Сохранить изменения
+      </button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
+

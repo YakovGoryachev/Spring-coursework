@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать плейлист</title>
+</head>
+<body>
+
+<div class="container" th:fragment="content">
+    <div class="section-header" style="margin-bottom: 30px;">
+        <h1 class="section-title">
+            <i class="fas fa-plus-circle"></i>
+            Создать плейлист
+        </h1>
+    </div>
+
+    <div class="section">
+        <!-- Ошибки -->
+<!--        <div th:if="${#fields.hasErrors('*')}"-->
+<!--             style="background: rgba(255,107,107,0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">-->
+<!--            <p style="color: #ff6b6b; margin: 0;">-->
+<!--                <i class="fas fa-exclamation-circle"></i>-->
+<!--                <span th:each="err : ${#fields.errors('*')}" th:text="${err}"></span>-->
+<!--            </p>-->
+<!--        </div>-->
+
+        <!-- Форма -->
+        <form th:action="@{/playlists/{id}/update(id=${playlistDto.id})}" method="post" enctype="multipart/form-data" th:object="${playlistDto}">
+
+            <!-- Название -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #aaa; margin-bottom: 8px;">
+                    Название *
+                </label>
+                <input type="text"
+                       th:field="*{name}"
+                       class="login-input"
+                       placeholder="Название плейлиста"
+                       style="width: 100%;"
+                       required>
+                <div th:if="${#fields.hasErrors('name')}" style="color: #ff6b6b; font-size: 12px; margin-top: 5px;">
+                    <span th:errors="*{name}"></span>
+                </div>
+            </div>
+
+            <!-- Описание -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #aaa; margin-bottom: 8px;">
+                    Описание
+                </label>
+                <textarea th:field="*{description}"
+                          class="login-input"
+                          placeholder="Описание плейлиста"
+                          rows="4"
+                          style="width: 100%; resize: vertical;"></textarea>
+                <div th:if="${#fields.hasErrors('description')}" style="color: #ff6b6b; font-size: 12px; margin-top: 5px;">
+                    <span th:errors="*{description}"></span>
+                </div>
+            </div>
+
+            <!-- Фото -->
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; color: #aaa; margin-bottom: 8px;">
+                    Обложка
+                </label>
+
+                <!-- Загрузка файла -->
+                <div>
+                    <label style="display: block; color: #aaa; margin-bottom: 5px; font-size: 14px;">
+                        Или загрузите файл:
+                    </label>
+                    <input type="file"
+                           name="coverFile"
+                           accept="image/*"
+                           class="login-input"
+                           style="width: 100%; padding: 8px;">
+                    <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+                        Поддерживаемые форматы: JPG, PNG, WebP
+                    </small>
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 30px;">
+                <a th:href="@{/playlists}" class="btn btn-outline" style="text-decoration: none;">
+                    Отмена
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    применить
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

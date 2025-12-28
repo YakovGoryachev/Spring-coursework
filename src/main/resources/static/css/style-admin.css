@@ -1,0 +1,79 @@
+.admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .admin-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+        color: white;
+    }
+
+    .admin-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-5px);
+        border-color: #4ecdc4;
+        box-shadow: 0 10px 25px rgba(78, 205, 196, 0.2);
+    }
+
+    .admin-card-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .admin-card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .admin-card-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .admin-card-desc {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .admin-card-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .admin-card-stat {
+        color: #4ecdc4;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .admin-card-arrow {
+        color: #4ecdc4;
+        font-size: 18px;
+    }
+
+    /* Цвета для иконок */
+    .tracks-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .artists-icon { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+    .groups-icon { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .albums-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .users-icon { background: linear-gradient(135deg, #a8edea, #fed6e3); }
