@@ -22,15 +22,15 @@ public class TrackDto {
     private String name;
     private String artistName;
     private String albumName;
-    private int albumId; // ID альбома
+    private int albumId;
     private String groupName;
     private String genre;
     private Integer duration;
     private Integer playCount;
     private String avatarPath;
     private String filePath;
-    private Double averageRating; // Средний рейтинг трека
-    private Integer commentCount; // Количество комментариев
+    private Double averageRating;
+    private Integer commentCount;
 
     public int getId() {
         return id;

@@ -21,7 +21,7 @@ public class Track {
 
     private String genre;
 
-    private Integer duration; // в секундах
+    private Integer duration;
 
     @Column(name="play_count")
     private Integer playCount;

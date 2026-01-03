@@ -20,8 +20,8 @@ public class PlaylistDto {
     private String avatarPath;
     private Integer trackCount;
     private LocalDate createdAt;
-    private int userId; // ID владельца плейлиста
-    private String userLogin; // Логин владельца для отображения
+    private int userId;
+    private String userLogin;
 
     public int getId() {
         return id;

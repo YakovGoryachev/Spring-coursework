@@ -12,8 +12,8 @@ public class GroupDto {
     private int id;
     private String name;
     private String avatarPath;
-    private Integer artistCount; // Количество артистов в группе
-    private Integer albumCount; // Количество альбомов группы
+    private Integer artistCount;
+    private Integer albumCount;
 
     public int getId() {
         return id;

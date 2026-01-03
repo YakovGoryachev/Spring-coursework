@@ -49,14 +49,13 @@ public class UserService {
         User user = new User();
         user.setLogin(dto.getLogin());
         user.setEmail(dto.getEmail());
-        // Хешируем пароль
+
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setDateBorn(dto.getDateBorn());
         user.setAdmin(false);
 
         User savedUser = userRepository.save(user);
 
-        // Создаем плейлист "Моя музыка" для нового пользователя
         PlaylistDto myMusicDto = new PlaylistDto();
         myMusicDto.setName("Моя музыка");
         myMusicDto.setDescription("Все ваши треки");
@@ -103,7 +102,6 @@ public class UserService {
         dto.setId(user.getId());
         dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
-        // Пароль не устанавливаем в DTO для безопасности (только при создании/обновлении)
         dto.setAdmin(user.isAdmin());
         dto.setDateRegister(user.getDateRegister());
         return dto;

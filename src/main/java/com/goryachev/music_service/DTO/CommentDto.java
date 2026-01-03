@@ -27,9 +27,9 @@ public class CommentDto {
     private int id;
     private String text;
     private int userId;
-    private String userLogin; // Для отображения в ответах
+    private String userLogin;
     private int trackId;
-    private String trackName; // Для отображения в ответах
+    private String trackName;
     private LocalDate commentDate;
 
     public int getId() {

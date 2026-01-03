@@ -100,7 +100,6 @@ function playTrack(trackId, title, artist) {
     currentTrackTitleEl.textContent = `${title} - ${artist}`;
     audio.src = `/audio/${trackId}`;
 
-    // Увеличиваем счётчик ТОЛЬКО если это новый трек
     if (lastPlayedTrackId !== trackId) {
         fetch(`/api/tracks/${trackId}/play`, {
             method: 'POST',

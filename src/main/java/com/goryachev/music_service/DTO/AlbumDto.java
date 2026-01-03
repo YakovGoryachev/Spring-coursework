@@ -18,8 +18,8 @@ public class AlbumDto {
     private String groupName;
     private LocalDate releaseDate;
     private Integer playCount;
-    private Integer trackCount; // Количество треков в альбоме
-    private Double averageRating; // Средний рейтинг альбома
+    private Integer trackCount;
+    private Double averageRating;
 
     public String getGroupName() {
         return groupName;

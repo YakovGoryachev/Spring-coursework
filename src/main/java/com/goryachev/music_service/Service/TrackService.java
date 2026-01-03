@@ -137,7 +137,6 @@ public class TrackService {
         return trsDto ;
     }
 
-    //с названиеями в trackdto, а не объектами
     public Track createTrack(TrackDto dto) {
         if (dto.getId() > 0) {
             throw new RuntimeException("Трек уже существует");
@@ -178,8 +177,7 @@ public class TrackService {
 
     public void deleteTrack(int id) {
         Track track = findById(id);
-        
-        // Удаляем файлы
+
         if (track.getFilePath() != null) {
             fileStorageService.deleteFile(track.getFilePath());
         }
@@ -297,7 +295,6 @@ public class TrackService {
             }
         }
 
-        // Средний рейтинг
         if (track.getRatings() != null && !track.getRatings().isEmpty()) {
             double avgRating = track.getRatings().stream()
                     .mapToInt(Rating::getValue)
@@ -306,7 +303,6 @@ public class TrackService {
             dto.setAverageRating(avgRating);
         }
 
-        // Количество комментариев
         if (track.getComments() != null) {
             dto.setCommentCount(track.getComments().size());
         } else {

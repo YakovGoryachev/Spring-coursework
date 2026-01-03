@@ -1,4 +1,3 @@
-// Глобальные переменные
 let currentTrackId = null;
 let trackList = [];
 let currentTrackIndex = -1;
@@ -12,9 +11,7 @@ const progressContainer = document.getElementById('progress-bar');
 const currentTimeEl = document.getElementById('current-time');
 const totalTimeEl = document.getElementById('total-time');
 
-// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    // Восстанавливаем состояние из localStorage
     const saved = JSON.parse(localStorage.getItem('musicStreamPlayer')) || {};
     if (saved.trackId) {
         loadTrackById(saved.trackId);
@@ -30,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Слушатели событий
     setupEventListeners();
 });
 
@@ -65,10 +61,10 @@ function setupEventListeners() {
     });
 
     audio.addEventListener('ended', () => {
-        skipForward(); // ← теперь работает по очереди
+        skipForward();
     });
 
-    // Клик по прогресс-бару
+
     progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
@@ -88,7 +84,6 @@ function savePlayerState() {
     }));
 }
 
-// Основная функция: загрузить трек по ID
 function loadTrackById(trackId) {
     if (!trackId) return;
 
@@ -103,21 +98,17 @@ function loadTrackById(trackId) {
         .catch(err => console.error('Failed to load track info', err));
 }
 
-// Внешний API: вызывается из кнопок на страницах
 function playTrack(trackId, title, artist) {
-    // Обновляем очередь
     if (!trackList.some(t => t.id === trackId)) {
         trackList.push({ id: trackId, title, artist });
     }
 
-    // Находим индекс текущего трека в очереди
     currentTrackIndex = trackList.findIndex(t => t.id === trackId);
 
     currentTrackId = trackId;
     currentTrackTitleEl.textContent = `${title} - ${artist}`;
     audio.src = `/audio/${trackId}`;
 
-    // Увеличиваем счётчик ТОЛЬКО если это новый трек
     if (lastPlayedTrackId !== trackId) {
         fetch(`/api/tracks/${trackId}/play`, {
             method: 'POST',
@@ -157,7 +148,7 @@ function skipForward() {
     if (currentTrackIndex < trackList.length - 1) {
         currentTrackIndex++;
     } else {
-        currentTrackIndex = 0; // зацикливание
+        currentTrackIndex = 0;
     }
 
     const nextTrack = trackList[currentTrackIndex];
@@ -170,7 +161,7 @@ function skipBackward() {
     if (currentTrackIndex > 0) {
         currentTrackIndex--;
     } else {
-        currentTrackIndex = trackList.length - 1; // зацикливание
+        currentTrackIndex = trackList.length - 1;
     }
 
     const prevTrack = trackList[currentTrackIndex];
@@ -187,16 +178,13 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Добавляем в начало player.js, после глобальных переменных
 function updateTrackList(newTracks) {
-    // Преобразуем треки в нужный формат
     trackList = newTracks.map(track => ({
         id: track.id,
         title: track.title || track.name,
         artist: track.artist || track.artistName
     }));
 
-    // Сохраняем очередь в localStorage
     savePlayerState();
 
     console.log('Track list updated:', trackList);

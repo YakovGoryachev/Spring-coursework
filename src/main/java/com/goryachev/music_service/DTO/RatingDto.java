@@ -27,9 +27,9 @@ public class RatingDto {
     private int id;
     private Integer value;
     private int userId;
-    private String userLogin; // Для отображения в ответах
+    private String userLogin;
     private int trackId;
-    private String trackName; // Для отображения в ответах
+    private String trackName;
     private LocalDate ratingDate;
 
     public int getId() {

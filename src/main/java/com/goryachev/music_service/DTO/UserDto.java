@@ -20,7 +20,7 @@ public class UserDto {
     private int id;
     private String login;
     private String email;
-    private String password; // Используется только при создании/обновлении
+    private String password;
     private boolean isAdmin;
     private LocalDateTime dateRegister;
     private Date dateBorn;

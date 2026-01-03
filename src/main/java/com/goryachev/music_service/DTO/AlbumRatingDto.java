@@ -27,9 +27,9 @@ public class AlbumRatingDto {
     private int id;
     private Integer value;
     private int userId;
-    private String userLogin; // Для отображения в ответах
+    private String userLogin;
     private int albumId;
-    private String albumName; // Для отображения в ответах
+    private String albumName;
     private LocalDate ratingDate;
 
     public int getId() {

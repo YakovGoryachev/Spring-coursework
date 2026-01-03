@@ -101,15 +101,13 @@ public class AlbumService {
             dto.setGroupId(album.getGroup().getId());
             dto.setGroupName(album.getGroup().getName());
         }
-        
-        // Количество треков
+
         if (album.getTracks() != null) {
             dto.setTrackCount(album.getTracks().size());
         } else {
             dto.setTrackCount(0);
         }
-        
-        // Средний рейтинг
+
         if (album.getAlbumRatings() != null && !album.getAlbumRatings().isEmpty()) {
             double avgRating = album.getAlbumRatings().stream()
                     .mapToInt(AlbumRating::getValue)

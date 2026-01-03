@@ -48,7 +48,7 @@ public class ObjectTrackDto {
     private String name;
     private Artist artist;
     private Album album;
-    private int albumId; // ID альбома
+    private int albumId;
     private Group group;
     private String genre;
     private Integer duration;

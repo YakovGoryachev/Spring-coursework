@@ -102,7 +102,6 @@ public class PlaylistService {
         Track track = trackRepository.findById(trackId)
                 .orElseThrow(() -> new RuntimeException("Трек не найден"));
 
-         //Инициализируем список если null
         if (playlist.getTracks() == null) {
             playlist.setTracks(new java.util.ArrayList<>());
         }

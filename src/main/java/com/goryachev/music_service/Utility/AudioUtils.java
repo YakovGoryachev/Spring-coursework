@@ -16,20 +16,15 @@ public class AudioUtils {
     public static int getMp3DurationSeconds(MultipartFile file)
             throws IOException, UnsupportedTagException, InvalidDataException {
 
-        // Создаём временный файл
         Path tempFile = Files.createTempFile("mp3_", ".mp3");
 
         try {
-            // Копируем MultipartFile во временный файл
             Files.copy(file.getInputStream(), tempFile, StandardCopyOption.REPLACE_EXISTING);
-
-            // Открываем Mp3File по пути
             Mp3File mp3 = new Mp3File(tempFile.toString());
             long durationMs = mp3.getLengthInMilliseconds();
             return (int) Math.round(durationMs / 1000.0);
 
         } finally {
-            // Удаляем временный файл
             Files.deleteIfExists(tempFile);
         }
     }

@@ -67,7 +67,6 @@ public class GroupService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new RuntimeException("Артист не найден"));
 
-        // Инициализируем списки если null
         if (artist.getGroups() == null) {
             artist.setGroups(new java.util.ArrayList<>());
         }
@@ -75,7 +74,6 @@ public class GroupService {
             group.setArtists(new java.util.ArrayList<>());
         }
 
-        // Добавляем группу в список артиста (Artist - владелец связи)
         if (!artist.getGroups().contains(group)) {
             artist.getGroups().add(group);
             artistRepository.save(artist);
@@ -87,12 +85,10 @@ public class GroupService {
         Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(() -> new RuntimeException("Артист не найден"));
 
-        // Инициализируем списки если null
         if (artist.getGroups() == null) {
             artist.setGroups(new java.util.ArrayList<>());
         }
 
-        // Удаляем группу из списка артиста (Artist - владелец связи)
         artist.getGroups().remove(group);
         artistRepository.save(artist);
     }
@@ -102,15 +98,13 @@ public class GroupService {
         dto.setId(group.getId());
         dto.setName(group.getName());
         dto.setAvatarPath(group.getAvatarPath());
-        
-        // Количество артистов
+
         if (group.getArtists() != null) {
             dto.setArtistCount(group.getArtists().size());
         } else {
             dto.setArtistCount(0);
         }
-        
-        // Количество альбомов
+
         if (group.getAlbums() != null) {
             dto.setAlbumCount(group.getAlbums().size());
         } else {
@@ -120,4 +114,3 @@ public class GroupService {
         return dto;
     }
 }
-

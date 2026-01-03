@@ -31,7 +31,6 @@ public class ApiMainController {
         Map<String, String> info = new HashMap<>();
         info.put("name", track.getName());
         info.put("filepath", track.getFilePath());
-        // можно добавить duration, album и т.д.
         return info;
     }
 
