@@ -18,8 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO исправить баг с синглом
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -56,13 +54,11 @@ public class AdminController {
         this.userRepository = userRepository;
     }
 
-    // ========== ГЛАВНАЯ СТРАНИЦА АДМИН-ПАНЕЛИ ==========
     @GetMapping({"", "/"})
     public String adminPanel(Model model) {
         return "admin-panel";
     }
 
-    // ========== ТРЕКИ ==========
     @GetMapping("/tracks")
     public String tracks(@RequestParam(required = false) String filterBy,
                         @RequestParam(required = false) String searchQuery,
@@ -72,7 +68,6 @@ public class AdminController {
                 .map(trackService::mapToDto)
                 .collect(Collectors.toList());
 
-        // Фильтрация
         if (searchQuery != null && !searchQuery.trim().isEmpty() && filterBy != null) {
             String query = searchQuery.toLowerCase().trim();
             tracks = tracks.stream()
@@ -113,7 +108,6 @@ public class AdminController {
                           @RequestParam(required = false) MultipartFile coverFile,
                           RedirectAttributes redirectAttributes) {
         try {
-            // Создаем или находим артиста
             Artist artistEntity = artistRepository.findFirstByNameIgnoreCase(artist);
 
             if (artistEntity == null) {
@@ -123,7 +117,6 @@ public class AdminController {
             }
             final Artist finalArtistEntity = artistEntity;
 
-            // Создаем или находим группу
             String groupName = group != null && !group.trim().isEmpty() ? group : artist;
             Group groupEntity = groupRepository.findFirstByNameIgnoreCase(groupName);
 
@@ -131,11 +124,8 @@ public class AdminController {
                 GroupDto groupDto = new GroupDto();
                 groupDto.setName(groupName);
                 groupEntity = groupService.createGroup(groupDto);
-                // Добавляем артиста в группу
                 groupService.addArtistToGroup(groupEntity.getId(), finalArtistEntity.getId());
             } else {
-                // Проверяем, есть ли артист в группе
-                // Нужно проверить со стороны артиста (Artist - владелец связи)
                 boolean artistInGroup = false;
                 if (finalArtistEntity.getGroups() != null) {
                     final Group finalGroupEntity = groupEntity;
@@ -148,7 +138,6 @@ public class AdminController {
             }
             final Group finalGroupEntity = groupEntity;
 
-            // Создаем или находим альбом
             String albumName = album != null && !album.trim().isEmpty() ? album : "Сингл";
 
             Album finalAlbum = new Album();
@@ -179,7 +168,6 @@ public class AdminController {
 
             Integer fileDuration = AudioUtils.getMp3DurationSeconds(audioFile);
 
-            // Создаем трек
 //            TrackDto trackDto = new TrackDto();
 //            trackDto.setName(title);
 //            trackDto.setGenre(genre);
@@ -283,7 +271,6 @@ public class AdminController {
         return "redirect:/admin/tracks";
     }
 
-    // ========== АРТИСТЫ ==========
     @GetMapping("/artists")
     public String artists(@RequestParam(required = false) String searchQuery, Model model) {
         List<Artist> allArtists = artistRepository.findAll();
@@ -365,7 +352,6 @@ public class AdminController {
         return "redirect:/admin/artists";
     }
 
-    // ========== ГРУППЫ ==========
     @GetMapping("/groups")
     public String groups(@RequestParam(required = false) String searchQuery, Model model) {
         List<Group> allGroups = groupRepository.findAll();
@@ -443,7 +429,6 @@ public class AdminController {
         return "redirect:/admin/groups";
     }
 
-    // ========== АЛЬБОМЫ ==========
     @GetMapping("/albums")
     public String albums(@RequestParam(required = false) String searchQuery, Model model) {
         List<Album> allAlbums = (searchQuery != null && !searchQuery.trim().isEmpty())
@@ -524,7 +509,6 @@ public class AdminController {
         return "redirect:/admin/albums";
     }
 
-    // ========== ПОЛЬЗОВАТЕЛИ ==========
     @GetMapping("/users")
     public String users(@RequestParam(required = false) String searchQuery, Model model) {
         List<User> allUsers = userRepository.findAll();

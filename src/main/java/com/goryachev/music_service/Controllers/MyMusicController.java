@@ -24,6 +24,7 @@ public class MyMusicController {
     private UserRepository userRepository;
     private PlaylistService playlistService;
     private PlaylistRepository playlistRepository;
+    private TrackRepository trackRepository;
     private TrackService trackService;
 
     public MyMusicController(UserRepository userRepository, PlaylistService playlistService,
@@ -33,6 +34,7 @@ public class MyMusicController {
         this.playlistService = playlistService;
         this.trackService = trackService;
         this.playlistRepository = playlistRepository;
+        this.trackRepository = trackRepository;
     }
 
     private User getCurrentUser() {
@@ -60,15 +62,14 @@ public class MyMusicController {
         model.addAttribute("content", "my-music :: content");
         model.addAttribute("title", "my music");
 
-        // Получаем все треки из всех плейлистов пользователя
         List<TrackDto> allTracks = trackService.findByUserPlaylists(currentUser.getId()).stream().limit(100)
                 .map(trackService::mapToDto)
                 .collect(Collectors.toList());
 
         //quantTracks = allTracks.size();
-        quantTracks = playlistRepository.countTracksInPlaylistByUserIdAndName(currentUser.getId(), "моя музыка");
+        //quantTracks = playlistRepository.countTracksInPlaylistByUserIdAndName(currentUser.getId(), "Моя музыка");
+        quantTracks = trackRepository.countDistinctTracksInUserPlaylists(currentUser.getId());
 
-        // Фильтрация
         if (search != null && !search.trim().isEmpty() && searchCategory != null && !searchCategory.isEmpty()) {
             switch (searchCategory) {
                 case "title":
@@ -91,7 +92,6 @@ public class MyMusicController {
             }
         }
 
-        // Пагинация
         int totalElements = allTracks.size();
         int totalPages = totalElements > 0 ? (int) Math.ceil((double) totalElements / size) : 1;
         int start = (page - 1) * size;

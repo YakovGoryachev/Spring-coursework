@@ -8,6 +8,7 @@ import com.goryachev.music_service.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -80,7 +81,6 @@ public class MainController {
                     .collect(Collectors.toList());
         }
 
-        // Пагинация
         int totalElements = allTracks.size();
         int totalPages = totalElements > 0 ? (int) Math.ceil((double) totalElements / size) : 1;
         int start = (page - 1) * size;
@@ -91,9 +91,17 @@ public class MainController {
             pageTracks = allTracks.subList(start, end);
         }
 
+//        Page<Track> trackPage = trackService.findAllPage(page, size);
+//        List<Track> content = trackPage.getContent();
+//        List<TrackDto> treki = content.stream().map(trackService::mapToDto).collect(Collectors.toList());
+
         model.addAttribute("tracks", pageTracks);
         model.addAttribute("totalElements", totalElements);
         model.addAttribute("totalPages", totalPages);
+//        model.addAttribute("tracks", treki);
+//        model.addAttribute("totalElements", trackPage.getTotalElements());
+//        model.addAttribute("totalPages", trackPage.getTotalPages());
+//        model.addAttribute("currentPage", trackPage.getNumber());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
         model.addAttribute("search", search);

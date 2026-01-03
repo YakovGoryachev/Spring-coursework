@@ -11,6 +11,10 @@ import com.goryachev.music_service.Repository.GroupRepository;
 import com.goryachev.music_service.Repository.TrackRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +50,10 @@ public class TrackService {
 
     public List<Track> findAll() {
         return trackRepository.findAll();
+    }
+    public Page<Track> findAllPage(int page, int size){ //was not
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        return trackRepository.findAllPage(pageable);
     }
 
     public List<Track> findByAlbumId(int albumId) {

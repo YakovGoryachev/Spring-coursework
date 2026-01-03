@@ -1,4 +1,3 @@
-// Глобальные переменные
 let currentTrackId = null;
 let trackList = [];
 let currentTrackIndex = -1;
@@ -12,9 +11,7 @@ const progressContainer = document.getElementById('progress-bar');
 const currentTimeEl = document.getElementById('current-time');
 const totalTimeEl = document.getElementById('total-time');
 
-// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    // Восстанавливаем состояние из localStorage
     const saved = JSON.parse(localStorage.getItem('musicStreamPlayer')) || {};
     if (saved.trackId) {
         loadTrackById(saved.trackId);
@@ -26,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Слушатели событий
+
     setupEventListeners();
 });
 
@@ -64,7 +61,7 @@ function setupEventListeners() {
         skipForward();
     });
 
-    // Клик по прогресс-бару
+
     progressContainer.addEventListener('click', (e) => {
         const rect = progressContainer.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
@@ -84,15 +81,13 @@ function savePlayerState() {
     }));
 }
 
-// Основная функция: загрузить трек по ID
 function loadTrackById(trackId) {
     if (!trackId) return;
 
-    // Запрос метаданных трека (название, URL)
     fetch(`/api/tracks/${trackId}/info`)
         .then(res => res.json())
         .then(data => {
-            audio.src = `/audio/${trackId}`; // ваш endpoint из предыдущего примера
+            audio.src = `/audio/${trackId}`;
             currentTrackId = trackId;
             currentTrackTitleEl.textContent = `${data.title} - ${data.artist}`;
             savePlayerState();
@@ -100,7 +95,6 @@ function loadTrackById(trackId) {
         .catch(err => console.error('Failed to load track info', err));
 }
 
-// Внешний API: вызывается из кнопок на страницах
 function playTrack(trackId, title, artist) {
     currentTrackId = trackId;
     currentTrackTitleEl.textContent = `${title} - ${artist}`;
@@ -142,7 +136,7 @@ function changeVolume(value) {
 }
 
 function skipForward() {
-    // Реализуйте логику перехода к следующему треку из очереди
+
     console.log('Skip forward (not implemented)');
 }
 

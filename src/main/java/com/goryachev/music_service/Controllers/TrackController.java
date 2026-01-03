@@ -53,20 +53,17 @@ public class TrackController {
         }
 
         try {
-            // Ищем плейлист по имени у пользователя
             Playlist playlist = playlistService.findByUserId(currentUser.getId()).stream()
                     .filter(p -> p.getName().equalsIgnoreCase(playlistName))
                     .findFirst()
                     .orElse(null);
 
-            // Если плейлиста нет - создаем
             if (playlist == null) {
                 PlaylistDto dto = new PlaylistDto();
                 dto.setName(playlistName);
                 playlist = playlistService.createPlaylist(dto, currentUser.getId());
             }
 
-            // Добавляем трек в плейлист
             playlistService.addTrackToPlaylist(playlist.getId(), trackId);
             redirectAttributes.addFlashAttribute("success", "Трек добавлен в плейлист '" + playlistName + "'!");
         } catch (Exception e) {

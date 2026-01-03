@@ -1,6 +1,8 @@
 package com.goryachev.music_service.Repository;
 
 import com.goryachev.music_service.Pojo.Track;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +12,12 @@ import java.util.List;
 
 @Repository
 public interface TrackRepository extends JpaRepository<Track, Integer> {
+
+    @Query("SELECT COUNT(DISTINCT t) FROM Track t JOIN t.playlists p WHERE p.user.id = :userId")
+    long countDistinctTracksInUserPlaylists(@Param("userId") int userId);
+
+    @Query("select t from Track t")
+    Page<Track> findAllPage(Pageable pageable); //was not
 
     List<Track> findByAlbum_Id(int albumId);
 

@@ -33,7 +33,6 @@ public class Playlist {
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    // Связь Many-to-Many с Track
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "playlist_tracks",

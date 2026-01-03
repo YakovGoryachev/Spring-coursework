@@ -10,6 +10,7 @@
     Все треки
   </h1>
 
+
   <!-- Панель поиска с фильтром -->
   <form th:action="@{/allTracks}" method="get" class="search-form">
     <div class="search-section">
@@ -276,119 +277,45 @@
       </div>
     </div>
 
+    <!-- Пагинация right my -->
+    <div th:if="${totalPages > 1}" style="margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 15px;">
+      <a th:href="@{/allTracks(page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
+         th:classappend="${currentPage == 1} ? 'disabled' : ''"
+         style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+        <i class="fas fa-chevron-left"></i> Назад
+      </a>
+
+      <div style="display: flex; gap: 5px;">
+        <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+          <a th:href="@{/allTracks(page=${i}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
+             th:style="${currentPage == i} ? 'background: #4ecdc4; color: white;' : 'background: rgba(255,255,255,0.1); color: white;'"
+             style="width: 35px; height: 35px; border: none; border-radius: 5px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: bold;"
+             th:text="${i}">1</a>
+        </th:block>
+      </div>
+
+      <a th:href="@{/allTracks(page=${currentPage < totalPages ? currentPage + 1 : totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
+         th:classappend="${currentPage == totalPages} ? 'disabled' : ''"
+         style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
+        Вперед <i class="fas fa-chevron-right"></i>
+      </a>
+
+      <div style="margin-left: 20px; color: #aaa;">
+        <span>Показывать по: </span>
+        <form th:action="@{/allTracks}" method="get" style="display: inline;">
+          <input type="hidden" name="search" th:value="${search}">
+          <input type="hidden" name="searchCategory" th:value="${searchCategory}">
+          <select name="size" onchange="this.form.submit()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 5px 10px; border-radius: 5px; margin-left: 5px;">
+            <option value="10" th:selected="${pageSize == 10}">10</option>
+            <option value="20" th:selected="${pageSize == 20}">20</option>
+            <option value="50" th:selected="${pageSize == 50}">50</option>
+            <option value="100" th:selected="${pageSize == 100}">100</option>
+          </select>
+        </form>
+      </div>
+    </div>
+
 
     </div>
   </div>
-
-  <!-- Пагинация -->
-  <div th:if="${totalPages > 1}" class="pagination-section" style="margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 15px;">
-    <a th:href="@{/allTracks(page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
-       th:classappend="${currentPage == 1} ? 'disabled' : ''"
-       class="pagination-btn"
-       style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-      <i class="fas fa-chevron-left"></i> Назад
-    </a>
-
-    <div style="display: flex; gap: 5px;">
-      <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{/allTracks(page=${i}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
-           th:classappend="${currentPage == i} ? 'active' : ''"
-           class="page-btn"
-           th:style="${currentPage == i} ? 'background: #4ecdc4; color: white;' : 'background: rgba(255,255,255,0.1); color: white;'"
-           style="width: 35px; height: 35px; border: none; border-radius: 5px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: bold;"
-           th:text="${i}">1</a>
-      </th:block>
-    </div>
-
-    <a th:href="@{/allTracks(page=${currentPage < totalPages ? currentPage + 1 : totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
-       th:classappend="${currentPage == totalPages} ? 'disabled' : ''"
-       class="pagination-btn"
-       style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-      Вперед <i class="fas fa-chevron-right"></i>
-    </a>
-
-    <div style="margin-left: 20px; color: #aaa;">
-      <span>Показывать по: </span>
-      <form th:action="@{/allTracks}" method="get" style="display: inline;">
-        <input type="hidden" name="search" th:value="${search}">
-        <input type="hidden" name="searchCategory" th:value="${searchCategory}">
-        <select name="size" onchange="this.form.submit()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 5px 10px; border-radius: 5px; margin-left: 5px;">
-          <option value="10" th:selected="${pageSize == 10}">10</option>
-          <option value="20" th:selected="${pageSize == 20}">20</option>
-          <option value="50" th:selected="${pageSize == 50}">50</option>
-          <option value="100" th:selected="${pageSize == 100}">100</option>
-        </select>
-      </form>
-    </div>
-  </div>
-
-<!--  &lt;!&ndash; Пагинация &ndash;&gt;-->
-<!--  <div th:if="${totalPages > 1}" class="pagination-section">-->
-<!--    <div class="pagination">-->
-<!--      &lt;!&ndash; Кнопка "Назад" &ndash;&gt;-->
-<!--      <a th:href="@{/allTracks(contentType=${contentType}, page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"-->
-<!--         th:classappend="${currentPage == 1} ? 'disabled' : ''"-->
-<!--         class="pagination-btn">-->
-<!--        <i class="fas fa-chevron-left"></i> Назад-->
-<!--      </a>-->
-
-<!--      &lt;!&ndash; Номера страниц &ndash;&gt;-->
-<!--      <div class="page-numbers">-->
-<!--        &lt;!&ndash; Первая страница &ndash;&gt;-->
-<!--        <a th:href="@{/allTracks(contentType=${contentType}, page=1, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"-->
-<!--           th:classappend="${currentPage == 1} ? 'active page-btn' : 'page-btn'">-->
-<!--          1-->
-<!--        </a>-->
-
-<!--        &lt;!&ndash; Многоточие если нужно &ndash;&gt;-->
-<!--        <span th:if="${currentPage > 3}" class="page-dots">...</span>-->
-
-<!--        &lt;!&ndash; Страницы вокруг текущей &ndash;&gt;-->
-<!--        <th:block th:each="i : ${#numbers.sequence(math.max(2, currentPage - 1), math.min(totalPages - 1, currentPage + 1))}">-->
-<!--          <a th:href="@{/allTracks(contentType=${contentType}, page=${i}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"-->
-<!--             th:classappend="${currentPage == i} ? 'active page-btn' : 'page-btn'">-->
-<!--            [[${i}]]-->
-<!--          </a>-->
-<!--        </th:block>-->
-
-<!--        &lt;!&ndash; Многоточие если нужно &ndash;&gt;-->
-<!--        <span th:if="${currentPage < totalPages - 2}" class="page-dots">...</span>-->
-
-<!--        &lt;!&ndash; Последняя страница если не первая &ndash;&gt;-->
-<!--        <a th:if="${totalPages > 1}"-->
-<!--           th:href="@{/allTracks(contentType=${contentType}, page=${totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"-->
-<!--           th:classappend="${currentPage == totalPages} ? 'active page-btn' : 'page-btn'">-->
-<!--          [[${totalPages}]]-->
-<!--        </a>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Кнопка "Вперед" &ndash;&gt;-->
-<!--      <a th:href="@{/allTracks(contentType=${contentType}, page=${currentPage < totalPages ? currentPage + 1 : totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"-->
-<!--         th:classappend="${currentPage == totalPages} ? 'disabled' : ''"-->
-<!--         class="pagination-btn">-->
-<!--        Вперед <i class="fas fa-chevron-right"></i>-->
-<!--      </a>-->
-
-<!--      &lt;!&ndash; Выбор размера страницы &ndash;&gt;-->
-<!--      <div class="page-size-selector">-->
-<!--        <span>На странице:</span>-->
-<!--        <form th:action="@{/allTracks}" method="get" style="display: inline;">-->
-<!--          <input type="hidden" name="contentType" th:value="${contentType}">-->
-<!--          <input type="hidden" name="search" th:value="${search}">-->
-<!--          <input type="hidden" name="searchCategory" th:value="${searchCategory}">-->
-<!--          <select name="size" class="form-input small" onchange="this.form.submit()">-->
-<!--            <option value="10" th:selected="${pageSize == 10}">10</option>-->
-<!--            <option value="20" th:selected="${pageSize == 20}">20</option>-->
-<!--            <option value="50" th:selected="${pageSize == 50}">50</option>-->
-<!--            <option value="100" th:selected="${pageSize == 100}">100</option>-->
-<!--          </select>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-  <!-- Стили -->
-  <style>
-  </style>
-</div>
 </html>

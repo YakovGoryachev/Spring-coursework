@@ -119,7 +119,6 @@ public class PlaylistController {
                     .collect(Collectors.toList());
         }
 
-        // Пагинация
         int totalElements = allTracks.size();
         int totalPages = totalElements > 0 ? (int) Math.ceil((double) totalElements / size) : 1;
         int start = (page - 1) * size;
@@ -168,7 +167,6 @@ public class PlaylistController {
             return "redirect:/playlists";
         }
 
-        // Нельзя удалить плейлист "Моя музыка"
         if ("Моя музыка".equals(playlist.getName())) {
             redirectAttributes.addFlashAttribute("error", "Нельзя удалить плейлист 'Моя музыка'");
             return "redirect:/playlists";
@@ -230,7 +228,6 @@ public class PlaylistController {
                     .collect(Collectors.toList());
         }
 
-        // Пагинация
         int totalElements = allPlaylists.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
         int start = (page - 1) * size;
