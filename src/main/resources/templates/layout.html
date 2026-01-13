@@ -63,7 +63,6 @@
       </div>
   </div>
 
-  <!-- Навигация -->
   <nav class="main-nav">
     <a th:href="@{/}" class="nav-link">
       <i class="fas fa-home"></i>
@@ -83,11 +82,9 @@
     </a>
   </nav>
 
-  <!-- Блок для контента страниц -->
 <!--  <div th:replace="${content}"></div>-->
   <div th:replace="~{__${content}__}"></div>
 
-  <!-- Футер -->
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">

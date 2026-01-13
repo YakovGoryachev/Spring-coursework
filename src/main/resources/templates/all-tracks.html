@@ -11,12 +11,10 @@
   </h1>
 
 
-  <!-- Панель поиска с фильтром -->
   <form th:action="@{/allTracks}" method="get" class="search-form">
     <div class="search-section">
       <div class="search-bar">
         <div class="search-wrapper">
-          <!-- Селект категории поиска -->
           <div class="search-category">
             <select name="searchCategory" class="category-select custom-select" >
               <option value="">Все категории</option>
@@ -29,7 +27,6 @@
             </select>
           </div>
 
-          <!-- Поле поиска -->
           <i class="fas fa-search"></i>
           <input type="text"
                  name="search"
@@ -37,12 +34,10 @@
                  th:value="${search ?: ''}"
                  class="search-input">
 
-          <!-- Кнопка поиска -->
           <button type="submit" class="search-btn">
             <i class="fas fa-search"></i> Найти
           </button>
 
-          <!-- Кнопка сброса -->
           <a th:href="@{/allTracks}" class="reset-btn" title="Сбросить фильтры">
             <i class="fas fa-redo"></i> Сбросить
           </a>
@@ -51,9 +46,7 @@
     </div>
   </form>
 
-  <!-- Контейнер для контента -->
   <div class="content-container">
-    <!-- === ТРЕКИ === -->
 <!--    <div th:if="${contentType == 'tracks' or contentType == null}">-->
     <div th:if="${tracks != null}">
       <div class="section-header">
@@ -92,9 +85,9 @@
               </div>
 <!--              <a class="a-row" th:text="${track.name}" th:href="@{'/details/track' + ${track.id}}"></a>-->
             </td>
-            <td><a class="a-row" th:text="${track.artistName}" th:href="@{'/my'}"></a></td>
-            <td><a class="a-row" th:text="${track.albumName}" th:href="@{'details/album'}"></a></td>
-            <td><a class="a-row" th:text="${track.groupName}" th:href="@{'/details/group'}"></a></td>
+            <td><a class="a-row" th:if="${track.artistId > 0}" th:text="${track.artistName}" th:href="@{'/details/artist/' + ${track.artistId}}"></a><span th:if="${track.artistId == 0 || track.artistName == null}" th:text="${track.artistName}"></span></td>
+            <td><a class="a-row" th:if="${track.albumId > 0}" th:text="${track.albumName}" th:href="@{'/details/album/' + ${track.albumId}}"></a><span th:if="${track.albumId == 0 || track.albumName == null}" th:text="${track.albumName}"></span></td>
+            <td><a class="a-row" th:if="${track.groupId > 0}" th:text="${track.groupName}" th:href="@{'/details/group/' + ${track.groupId}}"></a><span th:if="${track.groupId == 0 || track.groupName == null}" th:text="${track.groupName}"></span></td>
             <td th:text="${track.genre}"></td>
             <td th:text="${track.getFormattedDuration}"></td>
             <td th:text="${track.playCount}"></td>
@@ -126,7 +119,6 @@
           </tr>
 
           </tbody>
-          <!-- Если треков нет -->
           <tr th:if="${#lists.isEmpty(tracks)}">
             <td colspan="8" style="text-align: center; padding: 40px;">
               <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
@@ -160,7 +152,6 @@
       </script>
     </th:block>
 
-    <!-- === АРТИСТЫ === -->
     <div th:if="${artists != null}">
       <div class="section-header">
         <h2 class="section-title">
@@ -182,7 +173,7 @@
           <tbody>
           <tr th:each="artist, iter : ${artists}" th:class="${iter.odd} ? 'odd-row' : 'even-row'">
             <td th:text="${artist.id}"></td>
-            <td><a class="a-row" th:text="${artist.name}" th:href="@{'/details/artist' + ${artist.id}}"></a></td>
+            <td><a class="a-row" th:text="${artist.name}" th:href="@{'/details/artist/' + ${artist.id}}"></a></td>
 <!--            <td class="artist-cell">-->
 <!--              <div class="artist-info-small">-->
 <!--                <img th:src="${artist.avatarUrl ?: '/static/images/default-avatar.jpg'}"-->
@@ -205,7 +196,6 @@
           </tr>
           </tbody>
 
-          <!-- Если артисты не найдены -->
           <tr th:if="${#lists.isEmpty(artists)}">
             <td colspan="8" style="text-align: center; padding: 40px;">
               <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
@@ -226,7 +216,6 @@
       </div>
     </div>
 
-    <!-- === АЛЬБОМЫ === -->
     <div th:if="${albums != null}">
       <div class="section-header">
         <h2 class="section-title">
@@ -251,13 +240,12 @@
           <tbody th:if="${albums.size() > 0}" class="table-hover">
           <tr th:each="album : ${albums}" class="track-row">
             <td th:text="${album.id}"></td>
-            <td><a class="a-row" th:text="${album.name}" th:href="@{'/details/albums/' + ${album.id}}"></a></td>
-            <td><a class="a-row" th:text="${album.groupName}" th:href="@{'/details/groups/' + ${album.groupId}}"></a></td>
+            <td><a class="a-row" th:text="${album.name}" th:href="@{'/details/album/' + ${album.id}}"></a></td>
+            <td><a class="a-row" th:if="${album.groupId > 0}" th:text="${album.groupName}" th:href="@{'/details/group/' + ${album.groupId}}"></a><span th:if="${album.groupId == 0 || album.groupName == null}" th:text="${album.groupName}"></span></td>
             <td th:text="${album.playCount}"></td>
           </tr>
 
           </tbody>
-          <!-- Если альбомов нет -->
           <tr th:if="${#lists.isEmpty(albums)}">
             <td colspan="8" style="text-align: center; padding: 40px;">
               <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
@@ -277,7 +265,6 @@
       </div>
     </div>
 
-    <!-- Пагинация right my -->
     <div th:if="${totalPages > 1}" style="margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 15px;">
       <a th:href="@{/allTracks(page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
          th:classappend="${currentPage == 1} ? 'disabled' : ''"

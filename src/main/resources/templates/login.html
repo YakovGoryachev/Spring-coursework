@@ -20,20 +20,18 @@
       <p class="auth-subtitle">Добро пожаловать обратно!</p>
     </div>
 
-    <!-- Форма входа -->
     <form th:action="@{/login}" method="post" class="auth-form">
       <div th:if="${param.error}" class="alert alert-error">
         <i class="fas fa-exclamation-circle"></i>
-        Неверный email или пароль
+        Неверный логин или пароль
       </div>
       <div th:if="${param.logout}" class="alert alert-success">
         <i class="fas fa-check-circle"></i>
         Вы успешно вышли из системы
       </div>
 
-      <!-- Поле Email -->
       <div class="form-group">
-        <label for="email" class="form-label">
+        <label for="username" class="form-label">
           <i class="fas fa-user"></i> Логин
         </label>
         <input type="text"
@@ -45,7 +43,6 @@
                autofocus>
       </div>
 
-      <!-- Поле Пароль -->
       <div class="form-group">
         <label for="password" class="form-label">
           <i class="fas fa-lock"></i> Пароль
@@ -58,7 +55,6 @@
                required>
       </div>
 
-      <!-- Запомнить меня -->
       <div class="form-options">
         <label class="checkbox-label">
           <input type="checkbox" name="remember-me">
@@ -67,18 +63,15 @@
         <a th:href="@{/forgot-password}" class="forgot-link">Забыли пароль?</a>
       </div>
 
-      <!-- Кнопка входа -->
       <button type="submit" class="btn btn-primary btn-block">
         <i class="fas fa-sign-in-alt"></i> Войти
       </button>
     </form>
 
-    <!-- Разделитель -->
     <div class="auth-divider">
       <span>Или войдите с помощью</span>
     </div>
 
-    <!-- Социальные сети -->
     <div class="social-auth">
       <button type="button" class="social-btn google">
         <i class="fab fa-google"></i> Google
@@ -88,12 +81,10 @@
       </button>
     </div>
 
-    <!-- Ссылка на регистрацию -->
     <div class="auth-footer">
       <p>Нет аккаунта? <a th:href="@{/register}" class="auth-link">Зарегистрироваться</a></p>
     </div>
 
-    <!-- Ссылка на главную -->
     <div class="back-home">
       <a th:href="@{/}" class="back-link">
         <i class="fas fa-arrow-left"></i> Вернуться на главную

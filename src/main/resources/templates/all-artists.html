@@ -10,12 +10,10 @@
     Все треки
   </h1>
 
-  <!-- Панель поиска с фильтром -->
   <form th:action="@{/allTracks}" method="get" class="search-form">
     <div class="search-section">
       <div class="search-bar">
         <div class="search-wrapper">
-          <!-- Селект категории поиска -->
           <div class="search-category">
             <select name="searchCategory" class="category-select custom-select" >
               <option value="">Все категории</option>
@@ -27,7 +25,6 @@
             </select>
           </div>
 
-          <!-- Поле поиска -->
           <i class="fas fa-search"></i>
           <input type="text"
                  name="search"
@@ -35,12 +32,10 @@
                  th:value="${search ?: ''}"
                  class="search-input">
 
-          <!-- Кнопка поиска -->
           <button type="submit" class="search-btn">
             <i class="fas fa-search"></i> Найти
           </button>
 
-          <!-- Кнопка сброса -->
           <a th:href="@{/allTracks}" class="reset-btn" title="Сбросить фильтры">
             <i class="fas fa-redo"></i> Сбросить
           </a>
@@ -49,9 +44,7 @@
     </div>
   </form>
 
-  <!-- Контейнер для контента -->
   <div class="content-container">
-    <!-- === ТРЕКИ === -->
     <div th:if="${contentType == 'tracks' or contentType == null}">
       <div class="section-header">
         <h2 class="section-title">
@@ -128,7 +121,6 @@
             </td>
           </tr>
 
-          <!-- Если треков нет -->
           <tr th:if="${#lists.isEmpty(tracks)}">
             <td colspan="8" style="text-align: center; padding: 40px;">
               <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
@@ -149,7 +141,6 @@
       </div>
     </div>
 
-    <!-- === АРТИСТЫ === -->
     <div th:if="${contentType == 'artists'}">
       <div class="section-header">
         <h2 class="section-title">
@@ -206,7 +197,6 @@
       </div>
     </div>
 
-    <!-- === АЛЬБОМЫ === -->
     <div th:if="${contentType == 'albums'}">
       <div class="section-header">
         <h2 class="section-title">
@@ -266,7 +256,6 @@
     </div>
   </div>
 
-  <!-- Пагинация -->
   <div th:if="${totalPages > 1}" class="pagination-section">
     <div class="pagination-info">
       Показано:
@@ -275,25 +264,20 @@
     </div>
 
     <div class="pagination">
-      <!-- Кнопка "Назад" -->
       <a th:href="@{/allTracks(contentType=${contentType}, page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
          th:classappend="${currentPage == 1} ? 'disabled' : ''"
          class="pagination-btn">
         <i class="fas fa-chevron-left"></i> Назад
       </a>
 
-      <!-- Номера страниц -->
       <div class="page-numbers">
-        <!-- Первая страница -->
         <a th:href="@{/allTracks(contentType=${contentType}, page=1, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
            th:classappend="${currentPage == 1} ? 'active page-btn' : 'page-btn'">
           1
         </a>
 
-        <!-- Многоточие если нужно -->
         <span th:if="${currentPage > 3}" class="page-dots">...</span>
 
-        <!-- Страницы вокруг текущей -->
         <th:block th:each="i : ${#numbers.sequence(math.max(2, currentPage - 1), math.min(totalPages - 1, currentPage + 1))}">
           <a th:href="@{/allTracks(contentType=${contentType}, page=${i}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
              th:classappend="${currentPage == i} ? 'active page-btn' : 'page-btn'">
@@ -301,10 +285,8 @@
           </a>
         </th:block>
 
-        <!-- Многоточие если нужно -->
         <span th:if="${currentPage < totalPages - 2}" class="page-dots">...</span>
 
-        <!-- Последняя страница если не первая -->
         <a th:if="${totalPages > 1}"
            th:href="@{/allTracks(contentType=${contentType}, page=${totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
            th:classappend="${currentPage == totalPages} ? 'active page-btn' : 'page-btn'">
@@ -312,14 +294,12 @@
         </a>
       </div>
 
-      <!-- Кнопка "Вперед" -->
       <a th:href="@{/allTracks(contentType=${contentType}, page=${currentPage < totalPages ? currentPage + 1 : totalPages}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
          th:classappend="${currentPage == totalPages} ? 'disabled' : ''"
          class="pagination-btn">
         Вперед <i class="fas fa-chevron-right"></i>
       </a>
 
-      <!-- Выбор размера страницы -->
       <div class="page-size-selector">
         <span>На странице:</span>
         <form th:action="@{/allTracks}" method="get" style="display: inline;">
@@ -337,7 +317,6 @@
     </div>
   </div>
 
-  <!-- Стили -->
   <style>
   </style>
 </div>

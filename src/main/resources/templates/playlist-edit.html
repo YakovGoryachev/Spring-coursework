@@ -16,7 +16,6 @@
     </div>
 
     <div class="section">
-        <!-- Ошибки -->
 <!--        <div th:if="${#fields.hasErrors('*')}"-->
 <!--             style="background: rgba(255,107,107,0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">-->
 <!--            <p style="color: #ff6b6b; margin: 0;">-->
@@ -25,10 +24,8 @@
 <!--            </p>-->
 <!--        </div>-->
 
-        <!-- Форма -->
         <form th:action="@{/playlists/{id}/update(id=${playlistDto.id})}" method="post" enctype="multipart/form-data" th:object="${playlistDto}">
 
-            <!-- Название -->
             <div style="margin-bottom: 20px;">
                 <label style="display: block; color: #aaa; margin-bottom: 8px;">
                     Название *
@@ -44,7 +41,6 @@
                 </div>
             </div>
 
-            <!-- Описание -->
             <div style="margin-bottom: 20px;">
                 <label style="display: block; color: #aaa; margin-bottom: 8px;">
                     Описание
@@ -59,13 +55,11 @@
                 </div>
             </div>
 
-            <!-- Фото -->
             <div style="margin-bottom: 20px;">
                 <label style="display: block; color: #aaa; margin-bottom: 8px;">
                     Обложка
                 </label>
 
-                <!-- Загрузка файла -->
                 <div>
                     <label style="display: block; color: #aaa; margin-bottom: 5px; font-size: 14px;">
                         Или загрузите файл:
@@ -81,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Кнопки -->
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 30px;">
                 <a th:href="@{/playlists}" class="btn btn-outline" style="text-decoration: none;">
                     Отмена

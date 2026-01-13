@@ -55,9 +55,13 @@ public class PlaylistService {
     public Playlist createPlaylist(PlaylistDto dto, int userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-        if (dto.getName().toLowerCase().contains("моя музыка")){
+        List<Playlist> plList = playlistRepository.findByUser_IdAndNameContainingIgnoreCase(userId, dto.getName());
+        if (plList.size() > 0){
             throw new RuntimeException("Такой плейлист уже существует");
         }
+//        if (dto.getName().toLowerCase().contains("моя музыка")){
+//            throw new RuntimeException("Такой плейлист уже существует");
+//        }
 
         Playlist playlist = new Playlist();
         playlist.setName(dto.getName());
@@ -65,7 +69,7 @@ public class PlaylistService {
         playlist.setPhotoUrl(dto.getAvatarPath());
         playlist.setUser(user);
         playlist.setCreationDate(LocalDateTime.now());
-        playlist.setTracks(new java.util.ArrayList<>()); // Инициализируем пустой список
+        playlist.setTracks(new java.util.ArrayList<>());
 
         return playlistRepository.save(playlist);
     }
@@ -79,7 +83,7 @@ public class PlaylistService {
         if (dto.getDescription() != null) {
             playlist.setDescription(dto.getDescription());
         }
-        if (dto.getAvatarPath() != null) { //dorabotat
+        if (dto.getAvatarPath() != null) {
             playlist.setPhotoUrl(dto.getAvatarPath());
         }
 
@@ -93,10 +97,23 @@ public class PlaylistService {
 
     public void addTrackToPlaylist(int playlistId, int trackId) {
         Playlist playlist = findById(playlistId);
-        Playlist myPlaylist = playlistRepository.findByName("Моя музыка");
+//        Playlist myPlaylist = playlistRepository.findByName("Моя музыка");
+//
+//        if (myPlaylist == null){
+//            throw new RuntimeException("Моей музыки не существеут");
+//        }
+
+        User user = playlist.getUser();
+
+        List<Playlist> myMusicPlaylists = playlistRepository.findByUser_IdAndNameContainingIgnoreCase(
+                user.getId(), "Моя музыка");
+        Playlist myPlaylist = myMusicPlaylists.stream()
+                .filter(p -> p.getName().equals("Моя музыка"))
+                .findFirst()
+                .orElse(null);
 
         if (myPlaylist == null){
-            throw new RuntimeException("Моей музыки не существеут");
+            throw new RuntimeException("Плейлист 'Моя музыка' не найден для пользователя");
         }
 
         Track track = trackRepository.findById(trackId)

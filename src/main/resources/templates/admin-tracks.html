@@ -17,7 +17,6 @@
     <span style="color: white;">Управление треками</span>
   </div>
 
-  <!-- Сообщения об успехе/ошибке -->
   <div th:if="${success}" style="background: rgba(76, 175, 80, 0.2); border: 1px solid rgba(76, 175, 80, 0.5); color: #4caf50; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
     <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
   </div>
@@ -50,13 +49,11 @@
     </div>
   </div>
 
-  <!-- СЕКЦИЯ ПОИСКА (по умолчанию видима) -->
   <div id="search-section" class="section">
     <form th:action="@{/admin/tracks}" method="get">
       <div class="search-section">
         <div class="search-bar">
           <div class="search-wrapper" style="display: flex; align-items: center; gap: 10px; width: 100%;">
-            <!-- Селектор фильтра -->
             <select name="filterBy" class="custom-select" style="width: 180px;">
               <option value="title" th:selected="${filterBy == 'title'}">Название трека</option>
               <option value="artist" th:selected="${filterBy == 'artist'}">Исполнитель</option>
@@ -65,7 +62,6 @@
               <option value="genre" th:selected="${filterBy == 'genre'}">Жанр</option>
             </select>
 
-            <!-- Поле поиска -->
             <i class="fas fa-search" style="color: #aaa;"></i>
             <input type="text"
                    name="searchQuery"
@@ -74,12 +70,10 @@
                    class="search-input"
                    style="flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none;">
 
-            <!-- Кнопка поиска -->
             <button type="submit" class="search-btn">
               <i class="fas fa-search"></i> Найти
             </button>
 
-            <!-- Кнопка сброса -->
             <a th:href="@{/admin/tracks}" class="reset-btn">
               <i class="fas fa-redo"></i> Сбросить
             </a>
@@ -88,7 +82,6 @@
       </div>
     </form>
 
-    <!-- Список треков -->
     <div style="margin-top: 25px;">
       <h3 class="section-title" style="font-size: 16px; margin-bottom: 20px;">
         <i class="fas fa-list"></i>
@@ -127,7 +120,7 @@
                   </div>
                   <div>
                     <div style="font-weight: 500; color: white;">
-                      <a class="a-row" th:text="${track.name}" th:href="@{'details/track' + ${track.id}}"></a>
+                      <a class="a-row" th:text="${track.name}" th:href="@{'/details/track/' + ${track.id}}"></a>
                     </div>
                     <!--                <small style="color: #aaa; font-size: 11px;">MP3 • 8.2 MB • 320 kbps</small>-->
                   </div>
@@ -162,16 +155,13 @@
       </div>
     </div>
 
-    <!-- Пагинация -->
     <div th:if="${totalPages > 1}" class="pagination" style="margin-top: 30px;">
-      <!-- Кнопка "Назад" -->
       <a th:if="${currentPage > 1}"
          th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${currentPage - 1})}"
          class="page-btn">
         <i class="fas fa-chevron-left"></i>
       </a>
 
-      <!-- Номера страниц -->
       <div style="display: flex; gap: 5px;">
         <th:block th:each="page : ${#numbers.sequence(1, totalPages)}">
           <a th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${page})}"
@@ -181,7 +171,6 @@
         </th:block>
       </div>
 
-      <!-- Кнопка "Вперед" -->
       <a th:if="${currentPage < totalPages}"
          th:href="@{/admin/tracks(filterBy=${filterBy}, searchQuery=${searchQuery}, page=${currentPage + 1})}"
          class="page-btn">
@@ -190,7 +179,6 @@
     </div>
   </div>
 
-  <!-- СЕКЦИЯ ДОБАВЛЕНИЯ ТРЕКА (скрыта по умолчанию) -->
   <div id="add-section" class="section" style="display: none;">
     <h3 class="section-title" style="font-size: 18px; margin-bottom: 25px;">
       <i class="fas fa-plus-circle"></i> Добавить новый трек
@@ -198,9 +186,7 @@
 
     <form th:action="@{/admin/tracks/add}" method="post" enctype="multipart/form-data">
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
-        <!-- Левая колонка -->
         <div>
-          <!-- Основная информация -->
           <div style="margin-bottom: 25px;">
             <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
               <i class="fas fa-info-circle"></i> Основная информация
@@ -276,7 +262,6 @@
             </div>
           </div>
 
-          <!-- Техническая информация -->
           <div style="margin-bottom: 25px;">
 
 
@@ -298,9 +283,7 @@
           </div>
         </div>
 
-        <!-- Правая колонка -->
         <div>
-          <!-- Обложка трека -->
           <div style="margin-bottom: 25px;">
             <h4 style="color: white; margin-bottom: 15px; font-size: 16px;">
               <i class="fas fa-image"></i> Обложка трека
@@ -332,7 +315,6 @@
         </div>
       </div>
 
-      <!-- Кнопки формы -->
       <div style="display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
         <button type="button" onclick="showSearchSection()" class="btn btn-outline">
           <i class="fas fa-arrow-left"></i> Назад к поиску

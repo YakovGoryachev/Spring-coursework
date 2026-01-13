@@ -12,7 +12,6 @@
 
   <div class="main-content" th:fragment="content">
 
-    <!-- Заголовок и кнопка создания -->
     <div class="section" style="padding-bottom: 15px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h2 class="section-title">
@@ -29,7 +28,6 @@
       </p>
     </div>
 
-    <!-- Поиск плейлистов -->
     <div class="search-section">
       <div class="search-bar">
         <i class="fas fa-search"></i>
@@ -43,7 +41,6 @@
         </form>
       </div>
 
-      <!-- Фильтры (опционально) -->
       <div class="search-filters">
         <a th:href="@{/playlists}"
            th:classappend="${#strings.isEmpty(searchQuery) ? 'active' : ''}"
@@ -63,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Список плейлистов -->
     <div class="section">
       <div class="table-container">
         <table class="table">
@@ -77,7 +73,6 @@
           </tr>
           </thead>
           <tbody>
-          <!-- Если плейлисты есть -->
           <tr th:each="playlist, iter : ${playlists}"
               th:class="${iter.odd} ? 'odd-row' : 'even-row'">
             <td>
@@ -129,7 +124,6 @@
             </td>
           </tr>
 
-          <!-- Если плейлистов нет -->
           <tr th:if="${#lists.isEmpty(playlists)}">
             <td colspan="5" style="text-align: center; padding: 40px;">
               <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
@@ -150,19 +144,15 @@
       </div>
     </div>
 
-    <!-- Пагинация -->
     <div th:if="${totalPages > 1}" class="section" style="padding-top: 15px;">
       <div class="pagination">
-        <!-- Кнопка "Назад" -->
         <a th:href="@{/playlists(page=${currentPage > 1 ? currentPage - 1 : 1}, search=${searchQuery}, sort=${sort})}"
            th:classappend="${currentPage == 1} ? 'disabled' : ''"
            class="pagination-btn">
           <i class="fas fa-chevron-left"></i> Назад
         </a>
 
-        <!-- Страницы -->
         <div class="pagination-pages">
-          <!-- Первая страница -->
           <a th:href="@{/playlists(page=1, search=${searchQuery}, sort=${sort})}"
              th:classappend="${currentPage == 1} ? 'active' : ''"
              class="page-btn">
@@ -171,7 +161,6 @@
 
           <span th:if="${currentPage > 3}" class="page-dots">...</span>
 
-          <!-- Страницы вокруг текущей -->
           <th:block th:each="i : ${#numbers.sequence(Math.max(2, currentPage - 1), Math.min(totalPages - 1, currentPage + 1))}">
             <a th:href="@{/playlists(page=${i}, search=${searchQuery}, sort=${sort})}"
                th:classappend="${currentPage == i} ? 'active' : ''"
@@ -182,7 +171,6 @@
 
           <span th:if="${currentPage < totalPages - 2}" class="page-dots">...</span>
 
-          <!-- Последняя страница если не первая -->
           <a th:if="${totalPages > 1}"
              th:href="@{/playlists(page=${totalPages}, search=${searchQuery}, sort=${sort})}"
              th:classappend="${currentPage == totalPages} ? 'active' : ''"
@@ -191,19 +179,16 @@
           </a>
         </div>
 
-        <!-- Кнопка "Вперед" -->
         <a th:href="@{/playlists(page=${currentPage < totalPages ? currentPage + 1 : totalPages}, search=${searchQuery}, sort=${sort})}"
            th:classappend="${currentPage == totalPages} ? 'disabled' : ''"
            class="pagination-btn">
           Вперед <i class="fas fa-chevron-right"></i>
         </a>
 
-        <!-- Информация о странице -->
         <div style="color: #aaa; font-size: 14px; margin-left: 20px;">
           Страница [[${currentPage}]] из [[${totalPages}]]
         </div>
 
-        <!-- Выбор размера страницы -->
         <div class="page-size-selector">
           <span>Показывать по:</span>
           <form th:action="@{/playlists}" method="get" style="display: inline;">
@@ -221,7 +206,6 @@
   </div>
 </div>
 
-<!-- Модальное окно для быстрого создания плейлиста -->
 <div class="modal-overlay" id="create-playlist-modal" style="display: none;">
   <div class="modal">
     <h2>Создать плейлист</h2>

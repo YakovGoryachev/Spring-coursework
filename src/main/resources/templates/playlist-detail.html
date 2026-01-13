@@ -9,7 +9,6 @@
     <span th:text="${playlist.name}">Название плейлиста</span>
   </h1>
 
-  <!-- Информация о плейлисте -->
   <div style="margin-bottom: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
     <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
       <div th:if="${playlist.avatarPath != null}" style="width: 100px; height: 100px; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.1);">
@@ -22,7 +21,13 @@
           <i class="fas fa-music"></i> Треков: <span th:text="${playlist.trackCount}">0</span>
         </p>
       </div>
-      <div sec:authorize="isAuthenticated()">
+      <div sec:authorize="isAuthenticated()" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <button th:if="${tracks != null && !tracks.isEmpty()}" 
+                class="play-playlist-btn"
+                style="background: #4ecdc4; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px;"
+                title="Воспроизвести весь плейлист">
+          <i class="fas fa-play"></i> Воспроизвести плейлист
+        </button>
         <form th:action="@{'/playlists/' + ${playlist.id} + '/delete'}" method="post" style="display: inline;" onsubmit="return confirm('Вы уверены, что хотите удалить этот плейлист?');">
           <button type="submit" class="btn" style="background: #ff6b6b; color: white;">
             <i class="fas fa-trash"></i> Удалить плейлист
@@ -32,12 +37,10 @@
     </div>
   </div>
 
-  <!-- Панель поиска с фильтром -->
   <form th:action="@{'/playlists/' + ${playlist.id}}" method="get" class="search-form">
     <div class="search-section">
       <div class="search-bar">
         <div class="search-wrapper">
-          <!-- Селект категории поиска -->
           <div class="search-category">
             <select name="searchCategory" class="category-select custom-select">
               <option value="">Все категории</option>
@@ -49,7 +52,6 @@
             </select>
           </div>
 
-          <!-- Поле поиска -->
           <i class="fas fa-search"></i>
           <input type="text"
                  name="search"
@@ -57,12 +59,10 @@
                  th:value="${search ?: ''}"
                  class="search-input">
 
-          <!-- Кнопка поиска -->
           <button type="submit" class="search-btn">
             <i class="fas fa-search"></i> Найти
           </button>
 
-          <!-- Кнопка сброса -->
           <a th:href="@{'/playlists/' + ${playlist.id}}" class="reset-btn" title="Сбросить фильтры">
             <i class="fas fa-redo"></i> Сбросить
           </a>
@@ -71,7 +71,6 @@
     </div>
   </form>
 
-  <!-- Таблица треков -->
   <div class="chart-container">
     <table class="chart-table">
       <thead>
@@ -84,6 +83,7 @@
         <th>Жанр</th>
         <th><i class="far fa-clock"></i></th>
         <th>Прослушиваний</th>
+        <th>Действия</th>
         <th></th>
       </tr>
       </thead>
@@ -99,20 +99,31 @@
             <a class="a-row" th:text="${track.name}" th:href="@{'/details/track/' + ${track.id}}"></a>
           </div>
         </td>
-<!--        <td><a class="a-row" th:text="${track.artistName}" th:href="${track.artistId > 0 ? '/details/artist/' + track.artistId : '#'}"></a></td>-->
-        <td><a class="a-row" th:text="${track.albumName}"></a></td>
-        <td><a class="a-row" th:text="${track.groupName}"></a></td>
+        <td><a class="a-row" th:if="${track.artistId > 0}" th:text="${track.artistName}" th:href="@{'/details/artist/' + ${track.artistId}}"></a><span th:if="${track.artistId == 0 || track.artistName == null}" th:text="${track.artistName}"></span></td>
+        <td><a class="a-row" th:if="${track.albumId > 0}" th:text="${track.albumName}" th:href="@{'/details/album/' + ${track.albumId}}"></a><span th:if="${track.albumId == 0 || track.albumName == null}" th:text="${track.albumName}"></span></td>
+        <td><a class="a-row" th:if="${track.groupId > 0}" th:text="${track.groupName}" th:href="@{'/details/group/' + ${track.groupId}}"></a><span th:if="${track.groupId == 0 || track.groupName == null}" th:text="${track.groupName}"></span></td>
         <td th:text="${track.genre}"></td>
         <td th:text="${track.getFormattedDuration}"></td>
         <td th:text="${track.playCount}"></td>
         <td>
-          <form th:action="@{'/playlists/' + ${playlist.id} + '/remove-track/' + ${track.id}}" method="post" style="display: inline;" onsubmit="return confirm('Удалить трек из плейлиста?');">
-            <input type="hidden" name="returnUrl" th:value="@{'/playlists/' + ${playlist.id}(page=${currentPage}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}">
-            <button type="submit" class="btn" style="background: #ff6b6b; color: white; padding: 5px 15px;">
-              <i class="fas fa-trash"></i> Удалить
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="play-track-btn"
+                    th:data-track-id="${track.id}"
+                    th:data-title="${track.name}"
+                    th:data-artist="${track.artistName}"
+                    style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; border: 1px solid rgba(78, 205, 196, 0.3); padding: 8px 12px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 5px;"
+                    title="Воспроизвести">
+              <i class="fas fa-play"></i>
             </button>
-          </form>
+            <form th:action="@{'/playlists/' + ${playlist.id} + '/remove-track/' + ${track.id}}" method="post" style="display: inline;" onsubmit="return confirm('Удалить трек из плейлиста?');">
+              <input type="hidden" name="returnUrl" th:value="@{'/playlists/' + ${playlist.id}(page=${currentPage}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}">
+              <button type="submit" class="btn" style="background: #ff6b6b; color: white; padding: 5px 15px;">
+                <i class="fas fa-trash"></i> Удалить
+              </button>
+            </form>
+          </div>
         </td>
+        <td></td>
       </tr>
       </tbody>
         <th:block th:inline="javascript">
@@ -126,13 +137,23 @@
                             console.error('updateTrackList is not available');
                         }
                     }
+                    
+                    // Обработчик для кнопки воспроизведения всего плейлиста
+                    const playPlaylistBtn = document.querySelector('.play-playlist-btn');
+                    if (playPlaylistBtn && tracksFromServer.length > 0) {
+                        playPlaylistBtn.addEventListener('click', () => {
+                            const firstTrack = tracksFromServer[0];
+                            if (window.playTrack && firstTrack.id) {
+                                window.playTrack(firstTrack.id, firstTrack.name || firstTrack.title, firstTrack.artistName || firstTrack.artist || '');
+                            }
+                        });
+                    }
                 });
             </script>
         </th:block>
 
-      <!-- Если треков нет -->
       <tr th:if="${#lists.isEmpty(tracks)}">
-        <td colspan="9" style="text-align: center; padding: 40px;">
+        <td colspan="10" style="text-align: center; padding: 40px;">
           <div style="font-size: 48px; color: rgba(255,255,255,0.1); margin-bottom: 20px;">
             <i class="fas fa-music"></i>
           </div>
@@ -150,7 +171,6 @@
     </table>
   </div>
 
-  <!-- Пагинация -->
   <div th:if="${totalPages > 1}" class="pagination" style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
     <a th:if="${currentPage > 1}" 
        th:href="@{'/playlists/' + ${playlist.id}(page=${currentPage - 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"

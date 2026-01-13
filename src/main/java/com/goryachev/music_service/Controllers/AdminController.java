@@ -4,8 +4,6 @@ import com.goryachev.music_service.DTO.*;
 import com.goryachev.music_service.Pojo.*;
 import com.goryachev.music_service.Repository.*;
 import com.goryachev.music_service.Service.*;
-import com.goryachev.music_service.Utility.AudioUtils;
-import com.mpatric.mp3agic.Mp3File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +50,6 @@ public class AdminController {
         this.albumRepository = albumRepository;
         this.userRepository = userRepository;
     }
-
     @GetMapping({"", "/"})
     public String adminPanel(Model model) {
         return "admin-panel";
@@ -108,7 +104,10 @@ public class AdminController {
                           @RequestParam(required = false) MultipartFile coverFile,
                           RedirectAttributes redirectAttributes) {
         try {
-            Artist artistEntity = artistRepository.findFirstByNameIgnoreCase(artist);
+            Artist artistEntity = artistRepository.findAll().stream()
+                    .filter(a -> a.getName().equalsIgnoreCase(artist))
+                    .findFirst()
+                    .orElse(null);
 
             if (artistEntity == null) {
                 ArtistDto artistDto = new ArtistDto();
@@ -118,7 +117,10 @@ public class AdminController {
             final Artist finalArtistEntity = artistEntity;
 
             String groupName = group != null && !group.trim().isEmpty() ? group : artist;
-            Group groupEntity = groupRepository.findFirstByNameIgnoreCase(groupName);
+            Group groupEntity = groupRepository.findAll().stream()
+                    .filter(g -> g.getName().equalsIgnoreCase(groupName))
+                    .findFirst()
+                    .orElse(null);
 
             if (groupEntity == null) {
                 GroupDto groupDto = new GroupDto();
@@ -139,75 +141,31 @@ public class AdminController {
             final Group finalGroupEntity = groupEntity;
 
             String albumName = album != null && !album.trim().isEmpty() ? album : "Сингл";
-
-            Album finalAlbum = new Album();
-            if (albumName.equals("Сингл")){
-                Album al = albumRepository.findByNameAndGroupId(albumName, finalGroupEntity.getId());
-                if (al == null){
-                    AlbumDto albumDto = new AlbumDto();
-                    albumDto.setName(albumName);
-                    albumDto.setGroupId(finalGroupEntity.getId());
-                    finalAlbum = albumService.createAlbum(albumDto);
-                }
-                else{
-                    finalAlbum = al;
-                }
-            }
-            else {
-                //was
-                Album albumEntity = albumRepository.findByNameAndGroupId(albumName, finalGroupEntity.getId());
-                if (albumEntity == null) {
-                    AlbumDto albumDto = new AlbumDto();
-                    albumDto.setName(albumName);
-                    albumDto.setGroupId(finalGroupEntity.getId());
-                    albumEntity = albumService.createAlbum(albumDto);
-                    finalAlbum = albumEntity;
-                }
-                else finalAlbum = albumEntity;
+            Album albumEntity = albumRepository.findByName(albumName);
+            if (albumEntity == null) {
+                AlbumDto albumDto = new AlbumDto();
+                albumDto.setName(albumName);
+                albumDto.setGroupId(finalGroupEntity.getId());
+                albumEntity = albumService.createAlbum(albumDto);
             }
 
-            Integer fileDuration = AudioUtils.getMp3DurationSeconds(audioFile);
+            TrackDto trackDto = new TrackDto();
+            trackDto.setName(title);
+            trackDto.setGenre(genre);
+            trackDto.setDuration(duration);
+            trackDto.setAlbumName(albumEntity.getName());
+            trackDto.setArtistName(finalArtistEntity.getName());
+            trackDto.setGroupName(finalGroupEntity.getName());
 
-//            TrackDto trackDto = new TrackDto();
-//            trackDto.setName(title);
-//            trackDto.setGenre(genre);
-//            if (duration != null)
-//                trackDto.setDuration(duration);
-//            else
-//                trackDto.setDuration(fileDuration);
-//            trackDto.setAlbumName(albumEntity.getName()); //problem
-//            trackDto.setArtistName(finalArtistEntity.getName());
-//            trackDto.setGroupName(finalGroupEntity.getName());
-//
-//            String audioPath = "./uploads/" + fileStorageService.storeAudio(audioFile);
-//            trackDto.setFilePath(audioPath);
-//
-//            if (coverFile != null && !coverFile.isEmpty()) {
-//                String avatarPath = "/uploads/" + fileStorageService.storeAvatar(coverFile, "track");
-//                trackDto.setAvatarPath(avatarPath);
-//            }
-//
-//            trackService.createTrack(trackDto);
-            ObjectTrackDto tDto = new ObjectTrackDto();
-            tDto.setName(title);
-            tDto.setGenre(genre);
-            if (duration != null)
-                tDto.setDuration(duration);
-            else
-                tDto.setDuration(fileDuration);
-            tDto.setAlbum(finalAlbum);
-            tDto.setArtist(finalArtistEntity);
-            tDto.setGroup(finalGroupEntity);
-
-            String audioPath = "./uploads/" + fileStorageService.storeAudio(audioFile);
-            tDto.setFilePath(audioPath);
+            String audioPath = fileStorageService.storeAudio(audioFile);
+            trackDto.setFilePath(audioPath);
 
             if (coverFile != null && !coverFile.isEmpty()) {
-                String avatarPath = "/uploads/" + fileStorageService.storeAvatar(coverFile, "track");
-                tDto.setAvatarPath(avatarPath);
+                String avatarPath = fileStorageService.storeAvatar(coverFile, "track");
+                trackDto.setAvatarPath(avatarPath);
             }
-            trackService.createWithObjectsTrack(tDto);
 
+            trackService.createTrack(trackDto);
             redirectAttributes.addFlashAttribute("success", "Трек успешно добавлен!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка при добавлении трека: " + e.getMessage());
@@ -244,11 +202,11 @@ public class AdminController {
             if (group != null) trackDto.setGroupName(group);
 
             if (audioFile != null && !audioFile.isEmpty()) {
-                String audioPath = "./uploads/" + fileStorageService.storeAudio(audioFile);
+                String audioPath = fileStorageService.storeAudio(audioFile);
                 trackDto.setFilePath(audioPath);
             }
             if (coverFile != null && !coverFile.isEmpty()) {
-                String avatarPath = "/uploads/" + fileStorageService.storeAvatar(coverFile, "track");
+                String avatarPath = fileStorageService.storeAvatar(coverFile, "track");
                 trackDto.setAvatarPath(avatarPath);
             }
 
@@ -431,12 +389,17 @@ public class AdminController {
 
     @GetMapping("/albums")
     public String albums(@RequestParam(required = false) String searchQuery, Model model) {
-        List<Album> allAlbums = (searchQuery != null && !searchQuery.trim().isEmpty())
-                ? albumRepository.findByNameContainingIgnoreCase(searchQuery.trim())
-                : albumRepository.findAll();
+        List<Album> allAlbums = albumRepository.findAll();
         List<AlbumDto> albums = allAlbums.stream()
                 .map(albumService::mapToDto)
                 .collect(Collectors.toList());
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            String query = searchQuery.toLowerCase().trim();
+            albums = albums.stream()
+                    .filter(album -> album.getName() != null && album.getName().toLowerCase().contains(query))
+                    .collect(Collectors.toList());
+        }
 
         model.addAttribute("albums", albums);
         model.addAttribute("searchQuery", searchQuery);

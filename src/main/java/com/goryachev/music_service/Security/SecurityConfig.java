@@ -18,6 +18,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/register", "/static/**", "/css/**", "/static/css/js/**", "/uploads/**", "/details/**").permitAll()
                 .requestMatchers("/my", "/playlists/**").authenticated()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
@@ -41,4 +42,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

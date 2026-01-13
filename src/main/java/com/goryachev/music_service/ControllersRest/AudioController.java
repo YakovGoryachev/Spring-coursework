@@ -40,7 +40,7 @@ public class AudioController {
 
             if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType("audio/mpeg")) // или другой MIME-тип
+                        .contentType(MediaType.parseMediaType("audio/mpeg"))
                         .body(resource);
             } else {
                 return ResponseEntity.notFound().build();

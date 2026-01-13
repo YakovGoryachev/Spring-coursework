@@ -14,7 +14,6 @@
     Моя музыка
   </h1>
 
-  <!-- Статистика -->
   <div class="stats-container" style="display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;">
     <div class="stat-card" style="flex: 1; min-width: 200px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
       <h3 style="color: #4ecdc4; margin-bottom: 10px;">
@@ -35,7 +34,6 @@
     <div class="search-section">
       <div class="search-bar">
         <div class="search-wrapper">
-          <!-- Селект категории поиска -->
           <div class="search-category">
             <select name="searchCategory" class="category-select custom-select">
               <option value="">Все категории</option>
@@ -48,7 +46,6 @@
             </select>
           </div>
 
-          <!-- Поле поиска -->
           <i class="fas fa-search"></i>
           <input type="text"
                  name="search"
@@ -57,12 +54,10 @@
                  class="search-input"
                  style="flex: 1; background: transparent; border: none; color: white; font-size: 14px; padding: 10px; outline: none;">
 
-          <!-- Кнопка поиска -->
           <button type="submit" class="search-btn" style="background: linear-gradient(45deg, #667eea, #764ba2); border: none; padding: 10px 25px; border-radius: 20px; color: white; font-weight: 500; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
             <i class="fas fa-search"></i> Найти
           </button>
 
-          <!-- Кнопка сброса -->
           <a th:href="@{/my}" class="reset-btn" title="Сбросить фильтры">
             <i class="fas fa-redo"></i> Сбросить
           </a>
@@ -71,7 +66,6 @@
     </div>
   </form>
 
-  <!-- Заголовок и сортировка -->
   <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2 class="section-title">
       <i class="fas fa-list"></i>
@@ -88,7 +82,6 @@
 <!--    </div>-->
   </div>
 
-  <!-- Таблица треков -->
   <div class="section">
     <div class="table-container">
       <table class="table">
@@ -106,7 +99,6 @@
         </tr>
         </thead>
         <tbody th:if="${tracks.size() > 0}" class="table-hover">
-        <!-- Трек 1 -->
         <tr th:each="track, itr : ${tracks}" style="border-bottom: 1px solid rgba(255,255,255,0.05);" >
 <!--          <td style="text-align: center; color: #4ecdc4; font-weight: bold;">1</td>-->
           <td>
@@ -117,15 +109,15 @@
               </div>
               <div>
                 <div style="font-weight: 500; color: white;">
-                  <a class="a-row" th:text="${track.name}" th:href="@{'details/track' + ${track.id}}"></a>
+                  <a class="a-row" th:text="${track.name}" th:href="@{'/details/track/' + ${track.id}}"></a>
                 </div>
 <!--                <small style="color: #aaa; font-size: 11px;">MP3 • 8.2 MB • 320 kbps</small>-->
               </div>
             </div>
           </td>
-          <td style="color: white;"><a class="a-row" th:text="${track.artistName}" th:href="@{'/details/artist' + ${track.id}}"></a></td>
-          <td style="color: #aaa;"><a class="a-row" th:text="${track.albumName}" th:href="@{'details/album'}"></a></td>
-          <td><a class="a-row" th:text="${track.groupName}" th:href="@{'details/group'}"></a></td>
+          <td style="color: white;"><a class="a-row" th:if="${track.artistId > 0}" th:text="${track.artistName}" th:href="@{'/details/artist/' + ${track.artistId}}"></a><span th:if="${track.artistId == 0 || track.artistName == null}" th:text="${track.artistName}"></span></td>
+          <td style="color: #aaa;"><a class="a-row" th:if="${track.albumId > 0}" th:text="${track.albumName}" th:href="@{'/details/album/' + ${track.albumId}}"></a><span th:if="${track.albumId == 0 || track.albumName == null}" th:text="${track.albumName}"></span></td>
+          <td><a class="a-row" th:if="${track.groupId > 0}" th:text="${track.groupName}" th:href="@{'/details/group/' + ${track.groupId}}"></a><span th:if="${track.groupId == 0 || track.groupName == null}" th:text="${track.groupName}"></span></td>
           <td>
                                 <span style="background: rgba(78, 205, 196, 0.2); color: #4ecdc4; padding: 3px 10px; border-radius: 15px; font-size: 12px;"
                                 th:text="${track.genre}">
@@ -172,7 +164,6 @@
         </th:block>
     </div>
 
-    <!-- Пагинация -->
     <div th:if="${totalPages > 1}" style="margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 15px;">
       <a th:href="@{/my(page=${currentPage > 1 ? currentPage - 1 : 1}, size=${pageSize}, search=${search}, searchCategory=${searchCategory})}"
          th:classappend="${currentPage == 1} ? 'disabled' : ''"
@@ -212,9 +203,7 @@
   </div>
 </div>
 
-<!-- Минимальный стиль для улучшения отображения -->
 <style>
-  /* Дополнительные стили для таблицы */
   .table tr:hover {
       background: rgba(255, 255, 255, 0.03);
       cursor: pointer;
@@ -236,24 +225,20 @@
       color: #4ecdc4 !important;
   }
 
-  /* Для пагинации */
   .pagination-btn:hover {
       background: rgba(255, 255, 255, 0.2) !important;
   }
 
-  /* Для кнопок действий */
   .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
-  /* Анимация для play кнопки */
   .fa-play:hover {
       transform: scale(1.2);
       transition: transform 0.2s ease;
   }
 
-  /* Выделение активной строки (текущий трек) */
   .current-track {
       background: rgba(78, 205, 196, 0.1) !important;
       border-left: 3px solid #4ecdc4;

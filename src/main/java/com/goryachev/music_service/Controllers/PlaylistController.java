@@ -205,7 +205,7 @@ public class PlaylistController {
         return "redirect:/playlists/" + id;
     }
 
-    @GetMapping("") //playlists
+    @GetMapping("")
     public String playlists(@RequestParam(required = false) String search,
                             @RequestParam(defaultValue = "1") int page,
                             @RequestParam(defaultValue = "20") int size,

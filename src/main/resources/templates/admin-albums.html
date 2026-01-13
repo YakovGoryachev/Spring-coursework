@@ -37,7 +37,6 @@
     </button>
   </div>
 
-  <!-- Поиск -->
   <div id="search-section" class="section">
     <form th:action="@{/admin/albums}" method="get">
       <div class="search-section">
@@ -61,7 +60,6 @@
       </div>
     </form>
 
-    <!-- Список альбомов -->
     <div style="margin-top: 25px;">
       <div th:if="${albums == null or albums.empty}" class="empty-state" style="text-align: center; padding: 50px 20px; color: #aaa;">
         <i class="fas fa-compact-disc" style="font-size: 48px; margin-bottom: 15px;"></i>
@@ -111,7 +109,6 @@
     </div>
   </div>
 
-  <!-- Форма добавления -->
   <div id="add-section" class="section" style="display: none;">
     <h3 class="section-title" style="font-size: 18px; margin-bottom: 25px;">
       <i class="fas fa-plus-circle"></i> Добавить новый альбом

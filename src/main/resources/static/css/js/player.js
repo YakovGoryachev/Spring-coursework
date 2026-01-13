@@ -191,3 +191,4 @@ function updateTrackList(newTracks) {
 }
 
 window.updateTrackList = updateTrackList;
+window.playTrack = playTrack;

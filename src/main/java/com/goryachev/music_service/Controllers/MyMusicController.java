@@ -66,8 +66,6 @@ public class MyMusicController {
                 .map(trackService::mapToDto)
                 .collect(Collectors.toList());
 
-        //quantTracks = allTracks.size();
-        //quantTracks = playlistRepository.countTracksInPlaylistByUserIdAndName(currentUser.getId(), "Моя музыка");
         quantTracks = trackRepository.countDistinctTracksInUserPlaylists(currentUser.getId());
 
         if (search != null && !search.trim().isEmpty() && searchCategory != null && !searchCategory.isEmpty()) {

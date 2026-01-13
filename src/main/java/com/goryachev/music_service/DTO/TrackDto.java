@@ -21,9 +21,11 @@ public class TrackDto {
     private int id;
     private String name;
     private String artistName;
+    private int artistId;
     private String albumName;
     private int albumId;
     private String groupName;
+    private int groupId;
     private String genre;
     private Integer duration;
     private Integer playCount;
@@ -140,5 +142,21 @@ public class TrackDto {
 
     public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 }

@@ -11,7 +11,6 @@
 <body>
 <div class="auth-container">
   <div class="auth-card">
-    <!-- Логотип -->
     <div class="auth-header">
       <div class="auth-logo">
         <i class="fas fa-headphones"></i>
@@ -21,9 +20,7 @@
       <p class="auth-subtitle">Присоединяйтесь к MusicStream</p>
     </div>
 
-    <!-- Форма регистрации -->
     <form th:action="@{/register}" method="post" th:object="${user}" class="auth-form">
-      <!-- Сообщения об ошибках -->
       <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
         <i class="fas fa-exclamation-circle"></i>
         <span th:each="err : ${#fields.errors('*')}" th:text="${err}"></span>
@@ -33,7 +30,6 @@
         Регистрация успешна! Теперь вы можете войти.
       </div>
 
-      <!-- Имя пользователя -->
       <div class="form-group">
         <label for="login" class="form-label">
           <i class="fas fa-user"></i> Имя пользователя
@@ -49,7 +45,6 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="form-group">
         <label for="email" class="form-label">
           <i class="fas fa-envelope"></i> Email
@@ -65,7 +60,6 @@
         </div>
       </div>
 
-      <!-- Пароль -->
       <div class="form-group">
         <label for="password" class="form-label">
           <i class="fas fa-lock"></i> Пароль
@@ -80,7 +74,6 @@
           <i class="fas fa-info-circle"></i> Минимум 8 символов, буквы и цифры
         </div>
 
-<!--        дата регистрации-->
         <div th:if="${#fields.hasErrors('dateRegister')}" class="error-message">
           <span th:errors="*{dateRegister}"></span>
         </div>
@@ -100,7 +93,6 @@
         </div>
       </div>
 
-      <!-- Подтверждение пароля -->
       <!--      <div class="form-group">-->
       <!--        <label for="confirmPassword" class="form-label">-->
       <!--          <i class="fas fa-lock"></i> Подтверждение пароля-->
@@ -116,7 +108,6 @@
       <!--        </div>-->
       <!--      </div>-->
 
-      <!-- Дата рождения (опционально) -->
       <!--      <div class="form-group">-->
       <!--        <label for="birthDate" class="form-label">-->
       <!--          <i class="fas fa-birthday-cake"></i> Дата рождения-->
@@ -127,7 +118,6 @@
       <!--               class="form-input">-->
       <!--      </div>-->
 
-      <!-- Соглашение -->
       <!--      <div class="form-options">-->
       <!--        <label class="checkbox-label">-->
       <!--          <input type="checkbox" th:field="*{agreement}" required>-->
@@ -139,18 +129,15 @@
       <!--        </div>-->
       <!--      </div>-->
 
-      <!-- Кнопка регистрации -->
       <button type="submit" class="btn btn-primary btn-block">
         <i class="fas fa-user-plus"></i> Зарегистрироваться
       </button>
     </form>
 
-    <!-- Разделитель -->
     <div class="auth-divider">
       <span>Или зарегистрируйтесь с помощью</span>
     </div>
 
-    <!-- Социальные сети -->
     <div class="social-auth">
       <button type="button" class="social-btn google">
         <i class="fab fa-google"></i> Google
@@ -160,12 +147,10 @@
       </button>
     </div>
 
-    <!-- Ссылка на вход -->
     <div class="auth-footer">
       <p>Уже есть аккаунт? <a th:href="@{/login}" class="auth-link">Войти</a></p>
     </div>
 
-    <!-- Ссылка на главную -->
     <div class="back-home">
       <a th:href="@{/}" class="back-link">
         <i class="fas fa-arrow-left"></i> Вернуться на главную

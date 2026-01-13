@@ -34,7 +34,6 @@
     </div>
   </div>
 
-  <!-- Поиск -->
   <div id="search-section" class="section">
     <form th:action="@{/admin/users}" method="get">
       <div class="search-section">
@@ -58,7 +57,6 @@
       </div>
     </form>
 
-    <!-- Список пользователей -->
     <div style="margin-top: 25px;">
       <div th:if="${users == null or users.empty}" class="empty-state" style="text-align: center; padding: 50px 20px; color: #aaa;">
         <i class="fas fa-users-cog" style="font-size: 48px; margin-bottom: 15px;"></i>

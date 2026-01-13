@@ -17,7 +17,7 @@ public interface TrackRepository extends JpaRepository<Track, Integer> {
     long countDistinctTracksInUserPlaylists(@Param("userId") int userId);
 
     @Query("select t from Track t")
-    Page<Track> findAllPage(Pageable pageable); //was not
+    Page<Track> findAllPage(Pageable pageable);
 
     List<Track> findByAlbum_Id(int albumId);
 

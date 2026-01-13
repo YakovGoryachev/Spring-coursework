@@ -3,6 +3,7 @@ package com.goryachev.music_service.Service;
 import com.goryachev.music_service.DTO.ObjectTrackDto;
 import com.goryachev.music_service.DTO.TrackDto;
 import com.goryachev.music_service.Pojo.Album;
+import com.goryachev.music_service.Pojo.Artist;
 import com.goryachev.music_service.Pojo.Rating;
 import com.goryachev.music_service.Pojo.Track;
 import com.goryachev.music_service.Repository.AlbumRepository;
@@ -51,7 +52,7 @@ public class TrackService {
     public List<Track> findAll() {
         return trackRepository.findAll();
     }
-    public Page<Track> findAllPage(int page, int size){ //was not
+    public Page<Track> findAllPage(int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         return trackRepository.findAllPage(pageable);
     }
@@ -288,9 +289,12 @@ public class TrackService {
             dto.setAlbumId(track.getAlbum().getId());
             dto.setAlbumName(track.getAlbum().getName());
             if (track.getAlbum().getGroup() != null) {
+                dto.setGroupId(track.getAlbum().getGroup().getId());
                 dto.setGroupName(track.getAlbum().getGroup().getName());
                 if (track.getAlbum().getGroup().getArtists() != null && !track.getAlbum().getGroup().getArtists().isEmpty()) {
-                    dto.setArtistName(track.getAlbum().getGroup().getArtists().get(0).getName());
+                    Artist firstArtist = track.getAlbum().getGroup().getArtists().get(0);
+                    dto.setArtistId(firstArtist.getId());
+                    dto.setArtistName(firstArtist.getName());
                 }
             }
         }

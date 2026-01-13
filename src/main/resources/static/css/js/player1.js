@@ -110,7 +110,7 @@ function playTrack(trackId, title, artist) {
         .then(response => {
             if (response.ok) {
                 console.log('Play count incremented');
-                lastPlayedTrackId = trackId; // запоминаем, что уже засчитали
+                lastPlayedTrackId = trackId;
             } else {
                 console.error('Failed to increment play count');
             }

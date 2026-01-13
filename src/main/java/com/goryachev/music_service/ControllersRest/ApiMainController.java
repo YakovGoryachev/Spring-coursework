@@ -37,6 +37,6 @@ public class ApiMainController {
     @PostMapping("/{id}/play")
     public ResponseEntity<Void> incrementPlayCount(@PathVariable int id) {
         trackService.incrementPlayCount(id);
-        return ResponseEntity.ok().build(); // или ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
